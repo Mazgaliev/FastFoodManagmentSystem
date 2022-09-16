@@ -3,8 +3,7 @@ package com.example.fastfoodmanagmentbackend.Model.ValueObjects;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.contact.PhoneNumber;
 import lombok.Getter;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 
 @Embeddable
 @Getter
@@ -13,6 +12,10 @@ public class Owner {
     private final String ownerSurname;
     private final String e_mail;
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "operator", column = @Column(name = "Owner_Operator")),
+            @AttributeOverride(name = "number", column = @Column(name = "Owner_Number"))
+    })
     private final PhoneNumber ownerPhoneNumber;
 
     public Owner(String ownerName, String ownerSurname, String e_mail, PhoneNumber ownerPhoneNumber) {
@@ -28,7 +31,8 @@ public class Owner {
         this.e_mail = "";
         this.ownerPhoneNumber = null;
     }
-    public static Owner valueOf(String name, String surname, String e_mail, PhoneNumber phoneNumber){
-        return new Owner(name,surname,e_mail,phoneNumber);
+
+    public static Owner valueOf(String name, String surname, String e_mail, PhoneNumber phoneNumber) {
+        return new Owner(name, surname, e_mail, phoneNumber);
     }
 }

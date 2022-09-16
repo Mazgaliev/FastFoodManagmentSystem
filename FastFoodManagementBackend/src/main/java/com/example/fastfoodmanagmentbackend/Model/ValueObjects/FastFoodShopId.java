@@ -8,6 +8,10 @@ public class FastFoodShopId extends DomainObjectId {
         super(uuid);
     }
 
+    public static FastFoodShopId valueOf(String uuid) {
+        return new FastFoodShopId(uuid);
+    }
+
     private FastFoodShopId() {
         super(FastFoodShopId.randomId(FastFoodShopId.class).getId());
     }
