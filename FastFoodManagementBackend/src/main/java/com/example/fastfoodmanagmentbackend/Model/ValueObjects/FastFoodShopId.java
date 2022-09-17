@@ -2,9 +2,11 @@ package com.example.fastfoodmanagmentbackend.Model.ValueObjects;
 
 import com.example.fastfoodmanagmentbackend.Model.base.DomainObjectId;
 
+import javax.persistence.Embeddable;
+
 public class FastFoodShopId extends DomainObjectId {
 
-    protected FastFoodShopId(String uuid) {
+    public FastFoodShopId(String uuid) {
         super(uuid);
     }
 

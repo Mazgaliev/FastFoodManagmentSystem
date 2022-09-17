@@ -1,8 +1,9 @@
 package com.example.fastfoodmanagmentbackend.Model.base;
 
 import lombok.Getter;
-import org.springframework.lang.NonNull;
 import org.springframework.data.util.ProxyUtils;
+import org.springframework.lang.NonNull;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.Objects;
 @MappedSuperclass
 @Getter
 public class AbstractEntity<ID extends DomainObjectId> {
+
     @EmbeddedId
     private ID id;
 

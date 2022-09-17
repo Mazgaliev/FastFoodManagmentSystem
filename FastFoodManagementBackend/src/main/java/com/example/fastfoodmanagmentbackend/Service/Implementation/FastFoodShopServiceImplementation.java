@@ -1,5 +1,7 @@
 package com.example.fastfoodmanagmentbackend.Service.Implementation;
 
+import com.example.fastfoodmanagmentbackend.Model.Enum.ItemType;
+import com.example.fastfoodmanagmentbackend.Model.Enum.Role;
 import com.example.fastfoodmanagmentbackend.Model.Exceptions.PlaceNameAlreadyInUseException;
 import com.example.fastfoodmanagmentbackend.Model.Exceptions.ShopWithIdDoesntExistException;
 import com.example.fastfoodmanagmentbackend.Model.FastFoodShop;
@@ -16,22 +18,24 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location;
 import com.example.fastfoodmanagmentbackend.Repository.FastFoodShopRepository;
 import com.example.fastfoodmanagmentbackend.Service.FastFoodShopService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
+@AllArgsConstructor
 public class FastFoodShopServiceImplementation implements FastFoodShopService, UserDetailsService {
     private final FastFoodShopRepository fastFoodShopRepository;
 
-    public FastFoodShopServiceImplementation(FastFoodShopRepository fastFoodShopRepository) {
-        this.fastFoodShopRepository = fastFoodShopRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public FastFoodShop createShop(String name, String longitude, String latitude, String city, String ownerName, String ownerSurname, Operator ownerOperator, String ownerPhoneNumber, String owner_email) {
@@ -49,11 +53,12 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     }
 
     @Override
-    public void addItem(String name, Currency currency, Double amount, List<Long> itemIds, FastFoodShopId shopId) {
+    public void addItem(String name, Currency currency, Double amount, ItemType type, FastFoodShopId shopId) {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
-        shop.addItem(new Item(name, Money.valueOf(currency, amount), new ArrayList<>()));
-        this.fastFoodShopRepository.saveAndFlush(shop);
+        shop.addItem(new Item(name, Money.valueOf(currency, amount), type));
+        this.fastFoodShopRepository.save(shop);
     }
+
 
     @Override
     public void editItem(FastFoodShopId fastFoodShopId, Long id, String newName, Currency newCurrency, Double newAmount) {
@@ -69,7 +74,7 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     }
 
     @Override
-    public Order createOrder(Currency currency, Double amount, List<Long> itemIds, FastFoodShopId shopId, Person worker, String workerUsername) {
+    public Order createOrder(Currency currency, Double amount, List<Long> itemIds, FastFoodShopId shopId, String workerUsername) {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
         shop.makeOrder(itemIds, Money.valueOf(currency, amount), workerUsername);
         this.fastFoodShopRepository.saveAndFlush(shop);
@@ -104,9 +109,9 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     }
 
     @Override
-    public void createShopWorker(String username, String password, FastFoodShopId shopId) {
+    public void createShopWorker(String username, String password, Role role, FastFoodShopId shopId) {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
-        shop.addWorker(username, password);
+        shop.addWorker(username, this.passwordEncoder.encode(password), role);
         this.fastFoodShopRepository.saveAndFlush(shop);
     }
 
@@ -132,5 +137,12 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
         UserDetails p = shop.getWorkers().stream().filter(f -> f.getUsername().equals(username)).findFirst().orElseThrow(() -> new UsernameNotFoundException("Invalid username provided"));
 
         return p;
+    }
+
+    @Override
+    public FastFoodShop findById(FastFoodShopId shopId) {
+        FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
+
+        return shop;
     }
 }

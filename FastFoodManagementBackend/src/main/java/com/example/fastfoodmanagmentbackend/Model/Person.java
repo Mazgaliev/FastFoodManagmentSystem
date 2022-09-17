@@ -10,7 +10,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Getter
@@ -20,6 +23,7 @@ public class Person extends AbstractEntity<WorkerId> implements UserDetails {
 
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
     private Role role;
 
 
@@ -36,7 +40,7 @@ public class Person extends AbstractEntity<WorkerId> implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(role);
     }
 
     @Override

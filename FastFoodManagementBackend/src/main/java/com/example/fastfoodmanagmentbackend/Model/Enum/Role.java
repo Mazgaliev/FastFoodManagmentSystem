@@ -1,6 +1,13 @@
 package com.example.fastfoodmanagmentbackend.Model.Enum;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     WORKER,
-    OWNER
+    OWNER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

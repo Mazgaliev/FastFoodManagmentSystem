@@ -1,5 +1,7 @@
 package com.example.fastfoodmanagmentbackend.Service;
 
+import com.example.fastfoodmanagmentbackend.Model.Enum.ItemType;
+import com.example.fastfoodmanagmentbackend.Model.Enum.Role;
 import com.example.fastfoodmanagmentbackend.Model.FastFoodShop;
 import com.example.fastfoodmanagmentbackend.Model.Item;
 import com.example.fastfoodmanagmentbackend.Model.Order;
@@ -19,13 +21,13 @@ public interface FastFoodShopService {
 
     FastFoodShop createShop(String name, String longitude, String latitude, String city, String ownerName, String ownerSurname, Operator ownerOperator, String ownerPhoneNumber, String owner_email);
 
-    void addItem(String name, Currency currency, Double amount, List<Long> itemids, FastFoodShopId shopId);
+    void addItem(String name, Currency currency, Double amount, ItemType type, FastFoodShopId shopId);
 
     void editItem(FastFoodShopId fastFoodShopId, Long id, String newName, Currency newCurrency, Double newAmount);
 
     void deleteItem(Long id, FastFoodShopId shopId);
 
-    Order createOrder(Currency currency, Double amount, List<Long> itemIds, FastFoodShopId shopId, Person worker, String workerUsername);
+    Order createOrder(Currency currency, Double amount, List<Long> itemIds, FastFoodShopId shopId, String workerUsername);
 
     Order editOrder(Long id, FastFoodShopId shopId, List<Long> itemIds, Currency currency, Double total);
 
@@ -37,10 +39,12 @@ public interface FastFoodShopService {
 
     void deleteFastFoodShop(FastFoodShopId shopId);
 
-    void createShopWorker(String username, String password, FastFoodShopId shopId);
+    void createShopWorker(String username, String password, Role role, FastFoodShopId shopId);
 
     void deleteShopWorker(WorkerId workerId, FastFoodShopId shopId);
 
     UserDetails loadUserByUsernameAndShop(String username, FastFoodShopId fastFoodShopId);
+
+    FastFoodShop findById(FastFoodShopId shopId);
 
 }

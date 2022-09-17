@@ -1,5 +1,6 @@
 package com.example.fastfoodmanagmentbackend.Model;
 
+import com.example.fastfoodmanagmentbackend.Model.Enum.ItemType;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import lombok.Getter;
 
@@ -17,21 +18,15 @@ public class Item {
 
     private String name;
 
+    @Enumerated(value = EnumType.STRING)
+    private ItemType type;
+
     @Embedded
     private Money price;
-    @OneToMany
-    private List<Item> extras;
 
-    public Item(String name, Money price, List<Item> extras) {
+    public Item(String name, Money price, ItemType type) {
         this.name = name;
-        this.extras = extras;
-        if (extras.size() == 0) {
-            this.price = price;
-        } else {
-            for (Item e : extras) {
-                this.price = price.add(e.price);
-            }
-        }
+        this.price = price;
     }
 
     public Item() {

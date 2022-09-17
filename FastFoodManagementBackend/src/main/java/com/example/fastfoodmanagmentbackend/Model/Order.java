@@ -22,7 +22,6 @@ public class Order {
     private Money total;
 
     @ManyToOne
-
     private Person worker;
 
     @ManyToMany
@@ -32,6 +31,7 @@ public class Order {
         this.orderTime = LocalDateTime.now();
         this.total = total;
         this.items = items;
+        this.worker = worker;
     }
 
     public Order() {

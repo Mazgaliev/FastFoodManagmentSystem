@@ -1,5 +1,6 @@
 package com.example.fastfoodmanagmentbackend.Model;
 
+import com.example.fastfoodmanagmentbackend.Model.Enum.Role;
 import com.example.fastfoodmanagmentbackend.Model.Exceptions.ItemDoesNotExistException;
 import com.example.fastfoodmanagmentbackend.Model.Exceptions.ItemNameLikeException;
 import com.example.fastfoodmanagmentbackend.Model.Exceptions.OrderDoesNotExistException;
@@ -13,11 +14,10 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location
 import com.example.fastfoodmanagmentbackend.Model.base.AbstractEntity;
 import com.example.fastfoodmanagmentbackend.Model.base.DomainObjectId;
 import lombok.Getter;
+import org.springframework.security.authentication.BadCredentialsException;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,13 +32,13 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     @Embedded
     private Owner owner;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Item> items;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Order> orders;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Person> workers;
 
     public FastFoodShop(String name, Location location, Owner owner) {
@@ -46,10 +46,13 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
         this.name = name;
         this.location = location;
         this.owner = owner;
+        this.items = new ArrayList<>();
+        this.workers = new ArrayList<>();
+        this.orders = new ArrayList<>();
     }
 
     protected FastFoodShop() {
-
+        super(FastFoodShopId.randomId(FastFoodShopId.class));
     }
 
 
@@ -105,11 +108,17 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
         }
     }
 
-    public void addWorker(String username, String password) {
-
+    public Person addWorker(String username, String password, Role role) {
+        var p = new Person(username, password, role);
+        this.workers.add(p);
+        return p;
     }
 
-    public void removeWorker(WorkerId workerId){
+    public Person findWorkerByUsername(String username) {
+        return this.workers.stream().filter(i -> i.getUsername().equals(username)).findFirst().orElseThrow(() -> new BadCredentialsException("Invalid worker username"));
+    }
+
+    public void removeWorker(WorkerId workerId) {
 
     }
 }
