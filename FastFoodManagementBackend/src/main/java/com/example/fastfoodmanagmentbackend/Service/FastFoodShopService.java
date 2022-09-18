@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface FastFoodShopService {
 
@@ -29,13 +30,13 @@ public interface FastFoodShopService {
 
     Order createOrder(Currency currency, Double amount, List<Long> itemIds, FastFoodShopId shopId, String workerUsername);
 
-    Order editOrder(Long id, FastFoodShopId shopId, List<Long> itemIds, Currency currency, Double total);
+    Order editOrder(Long id, FastFoodShopId shopId, List<Long> itemIds, Currency currency, Double total, String workerUsername);
 
     Order deleteOrder(Long id, FastFoodShopId shopId);
 
-    List<Order> findAllOrders(FastFoodShopId shopId);
+    Set<Order> findAllOrders(FastFoodShopId shopId);
 
-    List<Order> findAllOrdersBetween(LocalDateTime from, LocalDateTime to, FastFoodShopId shopId);
+    Set<Order> findAllOrdersBetween(LocalDateTime from, LocalDateTime to, FastFoodShopId shopId);
 
     void deleteFastFoodShop(FastFoodShopId shopId);
 

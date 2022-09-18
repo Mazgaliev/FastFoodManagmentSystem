@@ -1,13 +1,13 @@
 package com.example.fastfoodmanagmentbackend.Model;
 
 import com.example.fastfoodmanagmentbackend.Model.Enum.Role;
+import com.example.fastfoodmanagmentbackend.Model.Exceptions.GenericException;
 import com.example.fastfoodmanagmentbackend.Model.Exceptions.ItemDoesNotExistException;
 import com.example.fastfoodmanagmentbackend.Model.Exceptions.ItemNameLikeException;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.OrderDoesNotExistException;
+import com.example.fastfoodmanagmentbackend.Model.Exceptions.PlaceMustHaveOwnerException;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.Owner;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.WorkerId;
-import com.example.fastfoodmanagmentbackend.Model.ValueObjects.contact.PhoneNumber;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Currency;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location;
@@ -17,8 +17,10 @@ import lombok.Getter;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -33,22 +35,22 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     private Owner owner;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Item> items;
+    private Set<Item> items;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Order> orders;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Order> orders;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Person> workers;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Person> workers;
 
     public FastFoodShop(String name, Location location, Owner owner) {
         super(DomainObjectId.randomId(FastFoodShopId.class));
         this.name = name;
         this.location = location;
         this.owner = owner;
-        this.items = new ArrayList<>();
-        this.workers = new ArrayList<>();
-        this.orders = new ArrayList<>();
+        this.items = Set.of();
+        this.workers = Set.of();
+        this.orders = Set.of();
     }
 
     protected FastFoodShop() {
@@ -64,14 +66,23 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
         return o;
     }
 
-    public void editOrder(Long orderId, Money newTotal, List<Long> newItemIds) {
-        Order order = this.orders.stream().filter(o -> o.getId().equals(orderId))
-                .findFirst()
-                .orElseThrow(OrderDoesNotExistException::new);
+    public Order editOrder(Long orderId, Money newTotal, List<Long> newItemIds, String workerUsername) {
+
+        this.orders.removeIf(o -> o.getId().equals(orderId));
+        Order o = makeOrder(newItemIds, newTotal, workerUsername);
+
+        return o;
     }
 
-    public void removeOrder(Long orderId) {
-        this.orders.removeIf(o -> o.getId().equals(orderId));
+    public Order removeOrder(Long orderId) {
+        Order order = null;
+        for (Order o : this.orders) {
+            if (o.getId().equals(orderId)) {
+                order = o;
+                this.orders.remove(o);
+            }
+        }
+        return order;
     }
 
     public void addItem(Item item) {
@@ -119,6 +130,26 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     }
 
     public void removeWorker(WorkerId workerId) {
+        Person worker = this.workers.stream().filter(w -> w.getId().getId().equals(workerId.getId())).findFirst().orElseThrow(() -> new GenericException("Worker with that id does not exist"));
+        Person owner = this.workers.stream().filter(w -> w.getRole().equals(Role.OWNER)).findFirst().orElseThrow(() -> new PlaceMustHaveOwnerException("Owner must exist"));
+
+        this.orders
+                .addAll(this.orders.stream().filter(o -> o.getWorker().getId().getId().equals(workerId.getId()))
+                .map(w -> Order.buildOrder(w.getTotal(), w.getItems(), owner, w.getOrderTime()))
+                        .collect(Collectors.toSet()));
+
+        this.orders.removeIf(o -> o.getWorker().getId().getId().equals(worker.getId().getId()));
+        this.workers.remove(worker);
+    }
+
+    public Set<Order> transferOrders(Set<Order> orders) {
+        this.orders.addAll(orders);
+        return orders;
+    }
+
+    public Set<Order> ordersBetweenDates(LocalDateTime start, LocalDateTime end) {
+        return this.orders.parallelStream().filter(o -> o.getOrderTime().equals(start) || o.getOrderTime().equals(end)).filter(o -> o.getOrderTime().isAfter(start) && o.getOrderTime().isBefore(end)).collect(Collectors.toSet());
+
 
     }
 }

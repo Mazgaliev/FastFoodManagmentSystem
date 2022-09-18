@@ -5,7 +5,6 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @Entity
@@ -27,6 +26,7 @@ public class Item {
     public Item(String name, Money price, ItemType type) {
         this.name = name;
         this.price = price;
+        this.type = type;
     }
 
     public Item() {

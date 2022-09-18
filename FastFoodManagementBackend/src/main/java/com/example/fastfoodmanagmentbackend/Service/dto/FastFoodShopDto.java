@@ -8,6 +8,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class FastFoodShopDto {
@@ -28,10 +29,10 @@ public class FastFoodShopDto {
     @NotNull
     WorkerDto currentWorker;
 
-    List<Item> food;
+    Set<Item> food;
 
-    List<Item> drinks;
+    Set<Item> drinks;
 
-    List<Item> additives;
+    Set<Item> additives;
 
 }

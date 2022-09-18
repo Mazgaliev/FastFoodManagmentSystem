@@ -2,6 +2,8 @@ package com.example.fastfoodmanagmentbackend.Model;
 
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import lombok.Getter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,13 +20,16 @@ public class Order {
 
     private LocalDateTime orderTime;
 
+    private LocalDateTime lastEditedTime;
+
     @Embedded
     private Money total;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Person worker;
 
-    @ManyToMany
+    @ManyToMany()
     List<Item> items;
 
     public Order(Money total, List<Item> items, Person worker) {
@@ -32,9 +37,35 @@ public class Order {
         this.total = total;
         this.items = items;
         this.worker = worker;
+        this.lastEditedTime = LocalDateTime.now();
+    }
+
+
+    public static Order buildOrder(Money total, List<Item> items, Person worker, LocalDateTime createdDate) {
+        return new Order(total, items, worker);
     }
 
     public Order() {
 
+    }
+
+    protected Order(Money total, List<Item> items, Person worker, LocalDateTime createdDate) {
+        this.orderTime = createdDate;
+        this.total = total;
+        this.items = items;
+        this.worker = worker;
+        this.lastEditedTime = LocalDateTime.now();
+    }
+
+    public void modifyOrder(Money newTotal, List<Item> newItems) {
+
+        this.total = newTotal;
+        this.items = newItems;
+
+        this.lastEditedTime = LocalDateTime.now();
+    }
+
+    public void removeWorker() {
+        worker = null;
     }
 }

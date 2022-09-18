@@ -7,12 +7,11 @@ import com.example.fastfoodmanagmentbackend.Model.Order;
 import com.example.fastfoodmanagmentbackend.Model.Person;
 import com.example.fastfoodmanagmentbackend.Service.dto.FastFoodShopDto;
 import com.example.fastfoodmanagmentbackend.Service.dto.OrderDto;
-import com.example.fastfoodmanagmentbackend.Service.dto.SucessLoginDto;
 import com.example.fastfoodmanagmentbackend.Service.dto.WorkerDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class Converter {
@@ -27,14 +26,14 @@ public class Converter {
         dto.setFood(shop.getItems());
         dto.setCurrentWorker(convertToDto(worker));
 
-        List<Item> allItems = shop.getItems();
-        List<Item> foods = new ArrayList<>();
-        List<Item> drinks = new ArrayList<>();
-        List<Item> additives = new ArrayList<>();
+        Set<Item> allItems = shop.getItems();
+        Set<Item> foods = new HashSet<>();
+        Set<Item> drinks = new HashSet<>();
+        Set<Item> additives = new HashSet<>();
         for (Item i : allItems) {
-            if (i.getType().equals(ItemType.FOOD)) {
+            if (i.getType().toString().equals(ItemType.FOOD.toString())) {
                 foods.add(i);
-            } else if (i.getType().equals(ItemType.ADDITIVE)) {
+            } else if (i.getType().toString().equals(ItemType.ADDITIVE.toString())) {
                 additives.add(i);
             } else {
                 drinks.add(i);
