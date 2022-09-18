@@ -11,7 +11,9 @@ import com.example.fastfoodmanagmentbackend.Service.dto.WorkerDto;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class Converter {
@@ -61,5 +63,10 @@ public class Converter {
         dto.setTotal(order.getTotal());
 
         return dto;
+    }
+
+    public Set<OrderDto> convertToDto(Set<Order> orders) {
+
+        return orders.stream().map(this::convertToDto).collect(Collectors.toSet());
     }
 }

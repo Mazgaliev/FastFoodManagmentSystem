@@ -1,25 +1,18 @@
 package com.example.fastfoodmanagmentbackend.Service.forms;
 
-import com.example.fastfoodmanagmentbackend.Model.Enum.ItemType;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
-import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Data
-public class ItemForm {
+public class ViewOrdersBetweenDateForm {
 
     @NotNull
-    String name;
-
+    LocalDate start;
     @NotNull
-    ItemType type;
-
-    @NotNull
-    Money price;
-
+    LocalDate end;
     @NotNull
     FastFoodShopId shopId;
-
 }

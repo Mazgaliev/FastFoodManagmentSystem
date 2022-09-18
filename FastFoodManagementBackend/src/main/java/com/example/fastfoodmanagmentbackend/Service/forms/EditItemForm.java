@@ -2,24 +2,28 @@ package com.example.fastfoodmanagmentbackend.Service.forms;
 
 import com.example.fastfoodmanagmentbackend.Model.Enum.ItemType;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
-import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
-import lombok.Data;
+import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Currency;
+import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 
-@Data
-public class ItemForm {
-
+@Getter
+public class EditItemForm {
     @NotNull
-    String name;
-
-    @NotNull
-    ItemType type;
-
-    @NotNull
-    Money price;
+    Long itemid;
 
     @NotNull
     FastFoodShopId shopId;
+
+    @NotNull
+    String itemName;
+
+    @NotNull
+    Currency currency;
+
+    @NotNull
+    Double amount;
+
+    @NotNull ItemType type;
 
 }

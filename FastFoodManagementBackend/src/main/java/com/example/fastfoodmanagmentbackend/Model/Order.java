@@ -29,7 +29,7 @@ public class Order {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Person worker;
 
-    @ManyToMany()
+    @ManyToMany
     List<Item> items;
 
     public Order(Money total, List<Item> items, Person worker) {
@@ -42,7 +42,7 @@ public class Order {
 
 
     public static Order buildOrder(Money total, List<Item> items, Person worker, LocalDateTime createdDate) {
-        return new Order(total, items, worker);
+        return new Order(total, items, worker, createdDate);
     }
 
     public Order() {

@@ -6,10 +6,10 @@ import com.example.fastfoodmanagmentbackend.Service.dto.OrderDto;
 import com.example.fastfoodmanagmentbackend.Service.forms.DeleteOrderForm;
 import com.example.fastfoodmanagmentbackend.Service.forms.EditOrderForm;
 import com.example.fastfoodmanagmentbackend.Service.forms.OrderForm;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.fastfoodmanagmentbackend.Service.forms.ViewOrdersBetweenDateForm;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = {"/api/order"})
@@ -33,7 +33,7 @@ public class OrderController {
         return dto;
     }
 
-    @PostMapping("/remove")
+    @DeleteMapping("/remove")
     public void deleteOrder(@RequestBody DeleteOrderForm form) {
 
         this.fastFoodShopService.deleteOrder(form.getOrderId(), form.getFastFoodShopId());
@@ -46,5 +46,12 @@ public class OrderController {
                 .convertToDto(this.fastFoodShopService
                         .editOrder(form.getId(), form.getShopId(), form.getItemIds(), form.getCurrency(), form.getAmount(), form.getWorkerUsername()));
         return dto;
+    }
+
+    @PostMapping("/view/between")
+    public Set<OrderDto> viewOrders(@RequestBody ViewOrdersBetweenDateForm form) {
+        Set<OrderDto> orders = this.converter
+                .convertToDto(this.fastFoodShopService.findAllOrdersBetween(form.getStart().atStartOfDay(), form.getEnd().plusDays(1).atStartOfDay(), form.getShopId()));
+        return orders;
     }
 }

@@ -2,14 +2,10 @@ package com.example.fastfoodmanagmentbackend.Service.Implementation;
 
 import com.example.fastfoodmanagmentbackend.Model.Enum.ItemType;
 import com.example.fastfoodmanagmentbackend.Model.Enum.Role;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.InvalidOrderException;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.PlaceMustHaveOwnerException;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.PlaceNameAlreadyInUseException;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.ShopWithIdDoesntExistException;
+import com.example.fastfoodmanagmentbackend.Model.Exceptions.*;
 import com.example.fastfoodmanagmentbackend.Model.FastFoodShop;
 import com.example.fastfoodmanagmentbackend.Model.Item;
 import com.example.fastfoodmanagmentbackend.Model.Order;
-import com.example.fastfoodmanagmentbackend.Model.Person;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.Owner;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.WorkerId;
@@ -64,10 +60,12 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
 
 
     @Override
-    public void editItem(FastFoodShopId fastFoodShopId, Long id, String newName, Currency newCurrency, Double newAmount) throws ShopWithIdDoesntExistException {
+    public Item editItem(FastFoodShopId fastFoodShopId, Long id, String newName, Currency newCurrency, Double newAmount) throws ShopWithIdDoesntExistException {
         FastFoodShop shop = this.fastFoodShopRepository.findById(fastFoodShopId).orElseThrow(ShopWithIdDoesntExistException::new);
-        shop.editItem(id, newName, newCurrency, newAmount);
+        Item i = shop.editItem(id, newName, newCurrency, newAmount);
         this.fastFoodShopRepository.saveAndFlush(shop);
+
+        return i;
     }
 
     @Override
@@ -86,7 +84,7 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
 
 
     @Override
-    public Order editOrder(Long id, FastFoodShopId shopId, List<Long> itemIds, Currency currency, Double total, String workerUsername) throws ShopWithIdDoesntExistException {
+    public Order editOrder(Long id, FastFoodShopId shopId, List<Long> itemIds, Currency currency, Double total, String workerUsername) throws ShopWithIdDoesntExistException, OrderDoesNotExistException, GenericException {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
 
         Order o = shop.editOrder(id, Money.valueOf(currency, total), itemIds, workerUsername);
@@ -162,5 +160,12 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
 
         return shop;
+    }
+
+    @Override
+    public Set<Item> findAllItems(FastFoodShopId shopId) {
+        FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
+
+        return shop.getItems();
     }
 }

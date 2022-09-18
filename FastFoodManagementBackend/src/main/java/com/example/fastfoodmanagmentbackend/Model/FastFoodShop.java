@@ -1,10 +1,7 @@
 package com.example.fastfoodmanagmentbackend.Model;
 
 import com.example.fastfoodmanagmentbackend.Model.Enum.Role;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.GenericException;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.ItemDoesNotExistException;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.ItemNameLikeException;
-import com.example.fastfoodmanagmentbackend.Model.Exceptions.PlaceMustHaveOwnerException;
+import com.example.fastfoodmanagmentbackend.Model.Exceptions.*;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.Owner;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.WorkerId;
@@ -16,8 +13,13 @@ import com.example.fastfoodmanagmentbackend.Model.base.DomainObjectId;
 import lombok.Getter;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +36,7 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     @Embedded
     private Owner owner;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Item> items;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -67,11 +69,18 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     }
 
     public Order editOrder(Long orderId, Money newTotal, List<Long> newItemIds, String workerUsername) {
+        //TODO currency transitions
+        Person worker = this.workers.stream().filter(w -> w.getUsername().equals(workerUsername)).findFirst().orElseThrow(() -> new GenericException("Worker does not exist in this shop"));
+        List<Item> its = this.items.stream().filter(i -> newItemIds.contains(i.getId())).toList();
+        Order o = this.orders.stream().filter(order -> order.getId().equals(orderId)).findFirst().orElseThrow(OrderDoesNotExistException::new);
 
-        this.orders.removeIf(o -> o.getId().equals(orderId));
-        Order o = makeOrder(newItemIds, newTotal, workerUsername);
 
-        return o;
+        this.orders.remove(o);
+
+        Order editedOrder = Order.buildOrder(newTotal, its, worker, o.getOrderTime());
+        this.orders.add(editedOrder);
+
+        return editedOrder;
     }
 
     public Order removeOrder(Long orderId) {
@@ -104,19 +113,26 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     }
 
     public void removeItem(Long itemId) {
-        this.items.removeIf(item -> item.getId().equals(itemId));
+        Item i = this.items.stream().filter(item -> item.getId().equals(itemId)).findFirst().orElseThrow(() -> new GenericException("This item does not exist"));
+
+        for (Order o : this.orders) {
+            o.getItems().removeIf(item -> item.getId().equals(itemId));
+        }
+
+        this.items.remove(i);
     }
 
-    public void editItem(Long itemId, String newName, Currency currency, Double amount) {
+    public Item editItem(Long itemId, String newName, Currency currency, Double amount) {
         Item i = this.items.stream().filter(item -> item.getId().equals(itemId)).findFirst().orElse(null);
         if (i == null) {
             throw new ItemDoesNotExistException();
-        } else if (newName.equals(name)) {
+        } else if (i.getPrice().getAmount() != amount) {
             Money money = Money.valueOf(currency, amount);
             i.changePrice(money);
-        } else {
+        } else if (!i.getName().equals(name)) {
             i.changeName(newName);
         }
+        return i;
     }
 
     public Person addWorker(String username, String password, Role role) {
@@ -132,24 +148,27 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     public void removeWorker(WorkerId workerId) {
         Person worker = this.workers.stream().filter(w -> w.getId().getId().equals(workerId.getId())).findFirst().orElseThrow(() -> new GenericException("Worker with that id does not exist"));
         Person owner = this.workers.stream().filter(w -> w.getRole().equals(Role.OWNER)).findFirst().orElseThrow(() -> new PlaceMustHaveOwnerException("Owner must exist"));
-
-        this.orders
-                .addAll(this.orders.stream().filter(o -> o.getWorker().getId().getId().equals(workerId.getId()))
-                .map(w -> Order.buildOrder(w.getTotal(), w.getItems(), owner, w.getOrderTime()))
-                        .collect(Collectors.toSet()));
+        Set<Order> newOrders = new HashSet<>();
+        for (Order o : this.orders) {
+            if (o.getWorker().getId().getId().equals(workerId.getId())) {
+                List<Item> orderItems = o.getItems();
+                List<Item> actualitems = this.items.stream().filter(orderItems::contains).toList();
+                newOrders.add(Order.buildOrder(o.getTotal(), actualitems, owner, o.getOrderTime()));
+            }
+        }
+        this.orders.addAll(newOrders);
 
         this.orders.removeIf(o -> o.getWorker().getId().getId().equals(worker.getId().getId()));
+
         this.workers.remove(worker);
     }
 
-    public Set<Order> transferOrders(Set<Order> orders) {
-        this.orders.addAll(orders);
-        return orders;
-    }
-
     public Set<Order> ordersBetweenDates(LocalDateTime start, LocalDateTime end) {
-        return this.orders.parallelStream().filter(o -> o.getOrderTime().equals(start) || o.getOrderTime().equals(end)).filter(o -> o.getOrderTime().isAfter(start) && o.getOrderTime().isBefore(end)).collect(Collectors.toSet());
 
+        return this.orders.parallelStream().filter(o -> {
+            return (o.getOrderTime().equals(start) || o.getOrderTime().equals(end)) || (o.getOrderTime().isAfter(start)
+                    && o.getOrderTime().isBefore(end));
+        }).collect(Collectors.toUnmodifiableSet());
 
     }
 }

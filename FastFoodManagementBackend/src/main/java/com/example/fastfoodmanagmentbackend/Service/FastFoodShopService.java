@@ -24,7 +24,7 @@ public interface FastFoodShopService {
 
     void addItem(String name, Currency currency, Double amount, ItemType type, FastFoodShopId shopId);
 
-    void editItem(FastFoodShopId fastFoodShopId, Long id, String newName, Currency newCurrency, Double newAmount);
+    Item editItem(FastFoodShopId fastFoodShopId, Long id, String newName, Currency newCurrency, Double newAmount);
 
     void deleteItem(Long id, FastFoodShopId shopId);
 
@@ -47,5 +47,7 @@ public interface FastFoodShopService {
     UserDetails loadUserByUsernameAndShop(String username, FastFoodShopId fastFoodShopId);
 
     FastFoodShop findById(FastFoodShopId shopId);
+
+    Set<Item> findAllItems(FastFoodShopId shopId);
 
 }
