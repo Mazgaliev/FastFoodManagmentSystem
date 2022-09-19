@@ -1,5 +1,6 @@
 package com.example.fastfoodmanagmentbackend.Web;
 
+import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
 import com.example.fastfoodmanagmentbackend.Service.FastFoodShopService;
 import com.example.fastfoodmanagmentbackend.Service.converter.Converter;
 import com.example.fastfoodmanagmentbackend.Service.dto.OrderDto;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping(value = {"/api/order"})
 public class OrderController {
 
@@ -36,7 +38,7 @@ public class OrderController {
     @DeleteMapping("/remove")
     public void deleteOrder(@RequestBody DeleteOrderForm form) {
 
-        this.fastFoodShopService.deleteOrder(form.getOrderId(), form.getFastFoodShopId());
+        this.fastFoodShopService.deleteOrder(form.getOrderId(), form.getShopId());
 
     }
 
@@ -53,5 +55,10 @@ public class OrderController {
         Set<OrderDto> orders = this.converter
                 .convertToDto(this.fastFoodShopService.findAllOrdersBetween(form.getStart().atStartOfDay(), form.getEnd().plusDays(1).atStartOfDay(), form.getShopId()));
         return orders;
+    }
+
+    @GetMapping("/{shopId}")
+    public Set<OrderDto> viewAllOrders(@PathVariable FastFoodShopId shopId) {
+        return this.converter.convertToDto(this.fastFoodShopService.findAllOrders(shopId));
     }
 }

@@ -50,6 +50,7 @@ public class Converter {
 
     public WorkerDto convertToDto(Person person) {
         WorkerDto dto = new WorkerDto();
+        dto.setId(person.getId());
         dto.setUsername(person.getUsername());
         dto.setRole(person.getRole());
         return dto;
@@ -61,6 +62,8 @@ public class Converter {
         dto.setOrderTime(order.getOrderTime());
         dto.setWorker(convertToDto(order.getWorker()));
         dto.setTotal(order.getTotal());
+        dto.setItems(order.getItems());
+        dto.setId(order.getId());
 
         return dto;
     }

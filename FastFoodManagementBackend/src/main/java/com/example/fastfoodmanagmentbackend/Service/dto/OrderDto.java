@@ -1,20 +1,27 @@
 package com.example.fastfoodmanagmentbackend.Service.dto;
 
+import com.example.fastfoodmanagmentbackend.Model.Item;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class OrderDto {
 
     @NotNull
-    private LocalDateTime orderTime;
+    Long id;
+    @NotNull
+    LocalDateTime orderTime;
 
     @NotNull
-    private Money total;
+    Money total;
 
     @NotNull
-    private WorkerDto worker;
+    WorkerDto worker;
+
+    @NotNull
+    List<Item> items;
 }

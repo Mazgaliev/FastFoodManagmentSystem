@@ -1,6 +1,5 @@
 package com.example.fastfoodmanagmentbackend.Service.forms;
 
-import com.example.fastfoodmanagmentbackend.Model.Person;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Currency;
 import lombok.Data;

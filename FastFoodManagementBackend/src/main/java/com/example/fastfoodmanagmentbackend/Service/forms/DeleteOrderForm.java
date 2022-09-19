@@ -11,5 +11,5 @@ public class DeleteOrderForm {
     Long orderId;
 
     @NotNull
-    FastFoodShopId fastFoodShopId;
+    FastFoodShopId shopId;
 }
