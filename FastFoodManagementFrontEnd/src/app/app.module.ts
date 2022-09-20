@@ -9,6 +9,11 @@ import {ItemListComponent} from './components/work-desk/item-list/item-list.comp
 import {OrderComponent} from './components/work-desk/order/order.component';
 import {ItemComponent} from './components/work-desk/item/item.component';
 import {RouterModule, Routes} from "@angular/router";
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+
+import {reducer} from "./store/reducer";
+import { environment } from '../environments/environment';
 
 const routes: Routes = [
   {
@@ -31,6 +36,12 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     RouterModule,
+    StoreModule.forRoot({}, {}),
+    StoreModule.forFeature('AppState', reducer),
+    StoreDevtoolsModule.instrument({
+      maxAge: 10
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

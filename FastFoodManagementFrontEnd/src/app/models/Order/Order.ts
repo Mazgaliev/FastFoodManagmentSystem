@@ -4,7 +4,7 @@ import {Person} from "../Person/Person";
 
 export interface Order {
   id: number;
-  itemsIds: Item[];
+  items: Item[];
   worker: Person;
   orderTime: string;
   total: Money;
