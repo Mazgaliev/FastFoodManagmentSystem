@@ -1,1 +1,43 @@
-<p>item-list works!</p>
+<div class="row">
+  <div class="col-6 text-end">
+    <button class="btn btn-lg btn-secondary"
+            [textContent]="'Food'"
+            (click)="viewFood()"></button>
+  </div>
+  <div class="col-6 text-start">
+    <button class="btn btn-lg btn-secondary"
+            [textContent]="'Drink'"
+            (click)="viewDrink()">
+
+    </button>
+  </div>
+</div>
+
+<ng-container *ngIf="showFood">
+  <div class="row">
+    <div *ngFor="let food of foods">
+      <app-item [item]="food"
+                (itemEmitter)="addToOrder($event)"></app-item>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngFor="let additive of additives">
+      <div class="col-1">
+        <app-item [item]="additive"
+                  (itemEmitter)="addToOrder($event)"></app-item>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="showDrink">
+  <div class="row">
+    <div *ngFor="let drink of drinks">
+      <div class="col-1">
+        <app-item [item]="drink"
+                  (itemEmitter)="addToOrder($event)">
+
+        </app-item>
+      </div>
+    </div>
+  </div>
+</ng-container>

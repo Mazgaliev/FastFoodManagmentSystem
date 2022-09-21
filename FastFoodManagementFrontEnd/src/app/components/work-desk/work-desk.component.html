@@ -1,2 +1,20 @@
-<p>work-desk works!</p>
+<div class="row">
+  <div class="col-12">
+    <app-order [order]="($orderState|async)"
+               (addItemEmitter)="addItemCount($event)"
+               (removeItemEmitter)="lowerItemCount($event)">
 
+    </app-order>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<app-item-list [additives]="($fastFoodShop|async)!.additives"
+               [foods]="($fastFoodShop|async)!.foods"
+               [drinks]="($fastFoodShop|async)!.drinks"
+               (addItemToOrderEmitter)="addItemToOrder($event)">
+
+</app-item-list>

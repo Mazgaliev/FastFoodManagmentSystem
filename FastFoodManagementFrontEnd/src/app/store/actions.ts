@@ -27,6 +27,8 @@ const enum Actions {
   EDIT_ITEM_SUCCESS = '[Item] Edit item successfully',
   DELETE_ITEM = '[Item] Delete item',
   DELETE_ITEM_SUCCESS = '[Item] Delete item successfully',
+  ADD_ITEM_COUNT = '[Item] Add item count',
+  REDUCE_ITEM_COUNT = '[Item] Reduce item count',
 
   LOGIN = '[General] Log in',
   LOGIN_SUCCESS = '[General] Log in successfully',
@@ -36,6 +38,14 @@ const enum Actions {
 
 }
 
+export const addItemCount = createAction(
+  Actions.ADD_ITEM_COUNT,
+  props<{ amount: number }>()
+)
+export const reduceItemCount = createAction(
+  Actions.REDUCE_ITEM_COUNT,
+  props<{ amount: number }>()
+)
 export const getOrders = createAction(
   Actions.FETCH_ORDERS,
   props<{ shopId: string }>()
@@ -61,6 +71,7 @@ export const addToOrderFail = createAction(
 )
 export const saveOrder = createAction(
   Actions.SAVE_ORDER,
+  props<{ order: Order }>
 )
 export const saveOrderSuccess = createAction(
   Actions.SAVE_ORDER_SUCCESS,

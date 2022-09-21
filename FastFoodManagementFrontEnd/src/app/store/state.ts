@@ -1,6 +1,8 @@
 import {FastFoodShop} from "../models/FastFoodShop/FastFoodShop";
 import {Order} from "../models/Order/Order";
 import {PersonRole} from "../models/Person/PersonRole";
+import {OrderState} from "../models/Order/OrderState";
+import {ItemType} from "../models/Item/ItemType";
 
 export const defaultShop: FastFoodShop = {
   id: {
@@ -25,12 +27,12 @@ export const defaultShop: FastFoodShop = {
       number: ""
     }
   },
-  foods: [],
+  foods: [{name: "Borger", price: {currency: "MKD", amount: 150}, id: 1, type: ItemType.FOOD}],
   drinks: [],
   additives: []
 };
-export const defaultOrders: Order = {
-  id: 1,
+
+export const defaultOrders: OrderState = {
   items: [],
   worker: {
     username: "",
@@ -40,12 +42,11 @@ export const defaultOrders: Order = {
     currency: "MKD",
     amount: 0
   },
-  orderTime: "",
 };
 
 export interface AppState {
   shopState: FastFoodShop;
-  orderState: Order;
+  orderState: OrderState;
   allOrders: Order[];
   loggedIn: boolean;
 }
