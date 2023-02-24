@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {AppActions, Selectors} from "../../store";
-import {Item} from "../../models/Item/Item";
 import {OrderState} from "../../models/Order/OrderState";
 import {FastFoodShop} from "../../models/FastFoodShop/FastFoodShop";
+import {OrderItem} from "../../models/Order/OrderItem";
+import {CreateOrder} from "../../models/Order/CreateOrder";
+import {Item} from "../../models/Item/Item";
+import {AppState} from "../../store/state";
 
 @Component({
   selector: 'app-work-desk',
@@ -15,19 +18,24 @@ export class WorkDeskComponent implements OnInit {
 
   $orderState: Observable<OrderState> = this.store.select(Selectors.selectOrder);
   $fastFoodShop: Observable<FastFoodShop> = this.store.select(Selectors.selectShop);
-  itemList: Item[] = [];
+  $foods: Observable<Item[]> = this.store.select(Selectors.selectFoods);
+  $additives: Observable<Item[]> = this.store.select(Selectors.selectAdditives);
+  $drinks: Observable<Item[]> = this.store.select(Selectors.selectDrinks);
 
-  constructor(private readonly store: Store) {
+  constructor(private readonly store: Store<AppState>) {
+
+
   }
 
   ngOnInit(): void {
   }
 
-  addItemToOrder(item: Item) {
+
+  addItemToOrder(item: OrderItem) {
     this.store.dispatch(AppActions.addToOrder({item: item}))
   }
 
-  removeItemFromOrder(item: Item) {
+  removeItemFromOrder(item: OrderItem) {
     this.store.dispatch(AppActions.removeItemFromOrder({item: item}))
   }
 
@@ -35,29 +43,16 @@ export class WorkDeskComponent implements OnInit {
 
   }
 
-  clearAllItemsInOrder() {
-
+  clearAllItemsInOrder(item: OrderItem) {
+  this.store.dispatch(AppActions.removeItemFromOrder({item:item}))
   }
 
-  lowerItemCount(event: { amount: number, count: number, id: number }) {
+  lowerItemCount(event: { item: OrderItem, count: number, }) {
     if (event.count != 0) {
-      this.store.dispatch(AppActions.reduceItemCount({amount: event.amount}));
+      this.store.dispatch(AppActions.reduceItemCount({amount: event.item.price.amount}));
     } else {
-      this.$fastFoodShop.subscribe(data => {
-        for (let i = 0; i < data.foods.length; i++) {
-          this.itemList.push(data.foods[i]);
-        }
-        for (let i = 0; i < data.drinks.length; i++) {
-          this.itemList.push(data.drinks[i]);
-        }
-        for (let i = 0; i < data.additives.length; i++) {
-          this.itemList.push(data.foods[i]);
-        }
-        console.log(data);
-      })
-      var item = this.itemList.filter(i => i.id === event.id)[0];
-      console.log(item);
-      this.store.dispatch(AppActions.removeItemFromOrder({item}));
+
+      this.store.dispatch(AppActions.removeItemFromOrder({item: event.item}))
     }
   }
 
@@ -66,4 +61,22 @@ export class WorkDeskComponent implements OnInit {
     this.store.dispatch(AppActions.addItemCount({amount: amount}));
   }
 
+  makeOrder(order: OrderState) {
+    var ids = order.items.map(item => item.id);
+    var shopId = '';
+    this.$fastFoodShop.subscribe(data => {
+      shopId = data.id.id
+    })
+    var createOrder: CreateOrder = {
+      shopId: {
+        id: shopId
+      },
+      itemIds: ids,
+      amount: order.total.amount,
+      currency: order.total.currency,
+      workerUsername: order.worker.username,
+
+    }
+    this.store.dispatch(AppActions.saveOrder({order: createOrder}))
+  }
 }

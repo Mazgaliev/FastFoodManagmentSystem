@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Store} from "@ngrx/store";
+import {AppActions, Selectors} from "../../store";
 
 @Component({
   selector: 'app-shop-module',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShopModuleComponent implements OnInit {
 
-  constructor() { }
+  $loggedIn = this.store.select(Selectors.selectLoggedIn)
+  $role = this.store.select(Selectors.selectRole)
 
-  ngOnInit(): void {
+  constructor(private readonly store: Store) {
   }
 
+  ngOnInit(): void {
+
+  }
+
+  logout(logout: any) {
+
+    this.store.dispatch(AppActions.logout());
+  }
 }

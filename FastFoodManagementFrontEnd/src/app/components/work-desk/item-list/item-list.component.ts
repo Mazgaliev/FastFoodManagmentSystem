@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Item} from "../../../models/Item/Item";
-import {ItemType} from "../../../models/Item/ItemType";
+import {OrderItem} from "../../../models/Order/OrderItem";
 import {Store} from "@ngrx/store";
-import {AppActions} from "../../../store";
+import {Selectors} from "../../../store";
 
 @Component({
   selector: 'app-item-list',
@@ -10,19 +10,21 @@ import {AppActions} from "../../../store";
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
+  characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  @Input() foods: Item[] = [{name: "Borger", price: {currency: "MKD", amount: 150}, id: 1, type: ItemType.FOOD}];
+  @Input() foods: Item[] = [];
   @Input() drinks: Item[] = [];
   @Input() additives: Item[] = [];
-  @Output() addItemToOrderEmitter: EventEmitter<Item> = new EventEmitter<Item>();
+  @Output() addItemToOrderEmitter: EventEmitter<OrderItem> = new EventEmitter<OrderItem>();
 
   showFood: boolean = true;
   showDrink: boolean = false;
 
-  constructor(private readonly store: Store) {
+  constructor(private readonly store:Store) {
   }
 
   ngOnInit(): void {
+
   }
 
   viewFood() {
@@ -31,12 +33,23 @@ export class ItemListComponent implements OnInit {
   }
 
   addToOrder(item: Item): void {
-    this.addItemToOrderEmitter.emit(item);
+    let specialId: string = '';
+
+    for (let i = 0; i < 10; i++) {
+      specialId += this.characters.charAt(Math.floor(Math.random() * this.characters.length));
+    }
+    const orderItem: OrderItem = {
+      specificId: specialId,
+      type: item.type,
+      name: item.name,
+      id: item.id,
+      price: item.price
+    }
+    this.addItemToOrderEmitter.emit(orderItem);
   }
 
   viewDrink() {
     this.showFood = false;
     this.showDrink = true;
   }
-
 }

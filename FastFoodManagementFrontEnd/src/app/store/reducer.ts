@@ -1,14 +1,28 @@
 import {createReducer, on} from "@ngrx/store";
-import {initialState} from "./state";
+import {defaultOrders, defaultShop, initialState} from "./state";
 import {
   addItemCount,
   addToOrder,
   createItem,
   createItemSuccess,
+  deleteItem,
+  deleteItemSuccess,
+  editItem,
+  editItemSuccess,
+  editOrder,
+  editOrderSuccess,
   getOrders,
   getOrdersFail,
-  getOrdersSuccess, reduceItemCount, removeItemFromOrder,
-  saveOrder, saveOrderFail,
+  getOrdersSuccess,
+  loginSuccess,
+  logout,
+  logoutSuccess,
+  reduceItemCount, registerStore, registerStoreSuccess,
+  removeItemFromOrder,
+  removeOrder,
+  removeOrderSuccess,
+  saveOrder,
+  saveOrderFail,
   saveOrderSuccess
 } from "./actions";
 
@@ -20,14 +34,13 @@ export const reducer = createReducer(
   })),
   on(getOrdersSuccess, (state, {orders}) => ({
     ...state,
-    allOrders: orders
+    allOrders: [...orders]
   })),
   on(getOrdersFail, (state) => ({
     ...state,
   })),
   on(createItem, (state, {item}) => ({
     ...state,
-
   })),
   on(createItemSuccess, (state) => ({
     ...state,
@@ -37,6 +50,14 @@ export const reducer = createReducer(
   })),
   on(saveOrderSuccess, (state) => ({
     ...state,
+    orderState: {
+      items: [],
+      worker: {...state.shopState.currentWorker},
+      total: {
+        currency: state.orderState.total.currency,
+        amount: 0
+      }
+    }
   })),
   on(saveOrderFail, (state) => ({
     ...state
@@ -44,7 +65,7 @@ export const reducer = createReducer(
   on(addToOrder, (state, {item}) => ({
     ...state,
     orderState: {
-      worker: state.orderState.worker,
+      worker: {...state.orderState.worker},
       items: [...state.orderState.items, item],
       total: {
         currency: state.orderState.total.currency,
@@ -59,15 +80,15 @@ export const reducer = createReducer(
         amount: state.orderState.total.amount + amount,
         currency: state.orderState.total.currency
       },
-      worker: state.orderState.worker,
-      items: state.orderState.items
+      worker: {...state.orderState.worker},
+      items: [...state.orderState.items]
     }
   })),
   on(removeItemFromOrder, (state, {item}) => ({
     ...state,
     orderState: {
-      items: state.orderState.items.filter(i => i.id != item.id),
-      worker: state.orderState.worker,
+      items: state.orderState.items.filter(i => i.specificId != item.specificId),
+      worker: {...state.orderState.worker},
       total: {
         currency: state.orderState.total.currency,
         amount: state.orderState.total.amount - item.price.amount
@@ -75,16 +96,68 @@ export const reducer = createReducer(
     }
 
   })),
+
   on(reduceItemCount, (state, {amount}) => ({
     ...state,
     orderState: {
-      items: state.orderState.items,
-      worker: state.orderState.worker,
+      items: [...state.orderState.items],
+      worker: {...state.orderState.worker},
       total: {
         currency: state.orderState.total.currency,
         amount: state.orderState.total.amount - amount
       }
     }
+  }))
+  , on(createItem, (state) => ({
+    ...state
+  })),
+  on(createItemSuccess, (state) => ({
+    ...state
+  })),
+  on(editItem, (state) => ({
+    ...state
+  })),
+  on(editItemSuccess, (state) => ({
+    ...state,
+  })),
+  on(deleteItem, (state) => ({
+    ...state
+  })),
+  on(deleteItemSuccess, (state) => ({
+    ...state,
+  })),
+  on(logout, (state) => ({
+    ...state,
+  })),
+  on(editOrder, (state) => ({
+    ...state
+  })),
+  on(editOrderSuccess, (state) => ({
+    ...state
+  })),
+  on(removeOrder, (state) => ({
+    ...state,
+  })),
+  on(removeOrderSuccess, (state) => ({
+    ...state,
+  })),
+  on(logoutSuccess, (state) => ({
+    ...state,
+    shopState: defaultShop,
+    orderState: defaultOrders,
+    allOrders: [],
+    loggedIn: false
+  })),
+  on(loginSuccess, (state, {shop}) => ({
+    ...state,
+    shopState: {...shop},
+    loggedIn: true
+  })),
+  on(registerStore, (state) => ({
+    ...state,
+  })),
+  on(registerStoreSuccess, (state) => ({
+    ...state,
   }))
 );
 

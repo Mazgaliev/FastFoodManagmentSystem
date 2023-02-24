@@ -1,8 +1,8 @@
 import {FastFoodShopId} from "./FastFoodShopId";
 import {Location} from "../Val_objects/Location";
 import {Owner} from "../Person/Owner";
-import {Item} from "../Item/Item";
 import {Person} from "../Person/Person";
+import {Item} from "../Item/Item";
 
 export interface FastFoodShop {
   id: FastFoodShopId;
@@ -10,7 +10,7 @@ export interface FastFoodShop {
   location: Location;
   owner: Owner;
 
-  currentWorker:Person;
+  currentWorker: Person;
 
   foods: Item[];
   additives: Item[];

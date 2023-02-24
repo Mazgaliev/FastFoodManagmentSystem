@@ -4,14 +4,13 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {RouterOutlet} from "@angular/router";
-import {StoreModule} from '@ngrx/store';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-
-import {reducer} from "./store/reducer";
-import {environment} from '../environments/environment';
 import {ShopModuleComponent} from './components/shop-module/shop-module.component';
 import {ShopModuleModule} from "./components/shop-module/shop-module.module";
 import {CommonModule} from "@angular/common";
+import {StoreModule} from "@ngrx/store";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../environments/environment";
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +20,14 @@ import {CommonModule} from "@angular/common";
   imports: [
     CommonModule,
     BrowserModule,
+    StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 10
+    }),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     HttpClientModule,
     ShopModuleModule,
-    RouterOutlet
+    RouterOutlet,
   ],
   providers: [],
   bootstrap: [AppComponent]

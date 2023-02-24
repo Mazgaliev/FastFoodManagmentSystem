@@ -7,7 +7,6 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,7 +28,7 @@ public class FastFoodShopDto {
     @NotNull
     WorkerDto currentWorker;
 
-    Set<Item> food;
+    Set<Item> foods;
 
     Set<Item> drinks;
 

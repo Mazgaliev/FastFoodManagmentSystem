@@ -13,10 +13,7 @@ import com.example.fastfoodmanagmentbackend.Model.base.DomainObjectId;
 import lombok.Getter;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,13 +33,13 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
     @Embedded
     private Owner owner;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Item> items;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Order> orders;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Person> workers;
 
     public FastFoodShop(String name, Location location, Owner owner) {
@@ -61,7 +58,7 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
 
 
     public Order makeOrder(List<Long> itemIds, Money total, String workerUsername) {
-        Person worker = this.workers.stream().filter(w -> w.getUsername().equals(workerUsername)).findFirst().orElseThrow(null);
+        Person worker = this.workers.stream().filter(w -> w.getUsername().equals(workerUsername)).findFirst().orElseThrow(() -> new GenericException("User does not exist with username " + workerUsername));
         List<Item> items = this.items.stream().filter(item -> itemIds.contains(item.getId())).toList();
         Order o = new Order(total, items, worker);
         this.orders.add(o);
@@ -135,13 +132,14 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
         return i;
     }
 
-    public Person addWorker(String username, String password, Role role) {
-        var p = new Person(username, password, role);
-        this.workers.add(p);
-        return p;
+    public Person addWorker(Person person) {
+//        var p = new Person(username, password, role);
+        this.workers.add(person);
+        return person;
     }
 
     public Person findWorkerByUsername(String username) {
+
         return this.workers.stream().filter(i -> i.getUsername().equals(username)).findFirst().orElseThrow(() -> new BadCredentialsException("Invalid worker username"));
     }
 

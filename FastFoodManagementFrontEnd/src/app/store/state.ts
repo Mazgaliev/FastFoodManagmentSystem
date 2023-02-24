@@ -6,7 +6,7 @@ import {ItemType} from "../models/Item/ItemType";
 
 export const defaultShop: FastFoodShop = {
   id: {
-    id: ""
+    id: "8d195355-8dbc-4199-b1e9-50262bba4c7a"
   },
   name: "",
   location: {
@@ -15,7 +15,10 @@ export const defaultShop: FastFoodShop = {
     city: "N"
   },
   currentWorker: {
-    username: "",
+    id: {
+      id: ''
+    },
+    username: "Mite",
     role: PersonRole.WORKER,
   },
   owner: {
@@ -35,7 +38,10 @@ export const defaultShop: FastFoodShop = {
 export const defaultOrders: OrderState = {
   items: [],
   worker: {
-    username: "",
+    id: {
+      id: ''
+    },
+    username: "Mite",
     role: PersonRole.WORKER
   },
   total: {

@@ -8,6 +8,8 @@ import {selectOrderItems} from "../../../store/selectors";
 import {Money} from "../../../models/Val_objects/Money";
 import {Order} from "../../../models/Order/Order";
 import {OrderState} from "../../../models/Order/OrderState";
+import {OrderItem} from "../../../models/Order/OrderItem";
+import {CreateOrder} from "../../../models/Order/CreateOrder";
 
 @Component({
   selector: 'app-order',
@@ -16,17 +18,17 @@ import {OrderState} from "../../../models/Order/OrderState";
 })
 export class OrderComponent implements OnInit {
 
-  @Input() order!: OrderState | null;
+  @Input() order!: OrderState;
   total: number = 0;
-  @Output() removeItemEmitter: EventEmitter<{ amount: number, id: number, count: number }> = new EventEmitter<{ amount: number; id: number; count: number }>()
+  @Output() removeItemEmitter: EventEmitter<{ item: OrderItem, count: number }> = new EventEmitter<{ item: OrderItem, count: number }>()
   @Output() addItemEmitter: EventEmitter<number> = new EventEmitter<number>();
-  @Output() clearAllItemsWithIdEmitter: EventEmitter<Item> = new EventEmitter<Item>()
+  @Output() clearAllItemsWithIdEmitter: EventEmitter<OrderItem> = new EventEmitter<OrderItem>()
+  @Output() saveOrderEmitter: EventEmitter<OrderState> = new EventEmitter<OrderState>();
 
   constructor() {
   }
 
   ngOnInit(): void {
-    console.log(this.order);
   }
 
   addItem(event: number) {
@@ -34,22 +36,12 @@ export class OrderComponent implements OnInit {
     this.addItemEmitter.emit(event);
   }
 
-  removeItem(event: { amount: number, id: number, count: number }) {
-    // console.log(event.count)
-    // if (event.count == 0) {
-    //   for (let i = 0; i < this.items.length; i++) {
-    //     if (this.items[i].id == event.id) {
-    //       this.items.splice(i, 1);
-    //       this.total -= event.amount;
-    //     }
-    //   }
-    // } else {
-    //   this.total -= event.amount;
-    // }
+  removeItem(event: { item: OrderItem, count: number }) {
+
     this.removeItemEmitter.emit(event);
   }
 
-  removeAllOfItemId(event: Item) {
+  removeAllOfItemId(event: OrderItem) {
     // console.log(event);
     // this.total -= event.amount;
     // for (let i = 0; i < this.items.length; i++) {
@@ -57,6 +49,11 @@ export class OrderComponent implements OnInit {
     //     this.items.splice(i, 1);
     //   }
     // }
+
     this.clearAllItemsWithIdEmitter.emit(event);
+  }
+
+  makeOrder(order: OrderState) {
+    this.saveOrderEmitter.emit(this.order);
   }
 }

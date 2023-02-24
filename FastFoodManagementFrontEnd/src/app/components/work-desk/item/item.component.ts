@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Item} from "../../../models/Item/Item";
 import {ItemType} from "../../../models/Item/ItemType";
+import {OrderItem} from "../../../models/Order/OrderItem";
 
 @Component({
   selector: 'app-item',

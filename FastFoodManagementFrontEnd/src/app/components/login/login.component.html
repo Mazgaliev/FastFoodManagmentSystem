@@ -1,1 +1,31 @@
-<p>login works!</p>
+<section id="header" class="jumbotron text-center">
+  <h1 class="display-3">Sign In</h1>
+</section>
+<div class="container">
+  <form [formGroup]="loginForm" class="form-signin mt-xl-5" method="post" action="/login">
+
+    <p>
+      <label for="shopId" class="sr-only">Shop ID</label>
+      <input formControlName="shopId" type="text" id="shopId" name="shopId" class="form-control"
+             placeholder="ID"
+             required="">
+    </p>
+
+    <p>
+      <label for="username" class="sr-only">Username</label>
+      <input formControlName="username" type="text" id="username" name="username" class="form-control"
+             placeholder="Username" required=""
+             autofocus="">
+    </p>
+    <p>
+      <label for="password" class="sr-only">Password</label>
+      <input formControlName="password" type="password" id="password" name="password" class="form-control"
+             placeholder="Password"
+             required="">
+    </p>
+
+  </form>
+  <button [routerLink]="'/home'" id="submit" class="btn btn-lg btn-primary btn-block" type="submit" (click)="login()">Sign in</button>
+  <a href="/register" class="btn btn-block btn-light">Register here</a>
+
+</div>

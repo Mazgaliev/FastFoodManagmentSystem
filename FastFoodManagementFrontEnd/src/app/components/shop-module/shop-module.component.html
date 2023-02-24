@@ -1,9 +1,14 @@
-<app-header></app-header>
+<app-header *ngIf="$loggedIn|async"
+            [loggedIn]="($loggedIn|async)!"
+            [role]="($role|async)!"
+            (logoutEmitter)="logout($event)">
+</app-header>
 
 
 <div class="row">
   <div class="col-12 text-center">
     <router-outlet></router-outlet>
+    <!--    <app-item-list-->
   </div>
   <div class="col-6"></div>
 </div>

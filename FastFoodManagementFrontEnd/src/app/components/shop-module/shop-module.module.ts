@@ -12,14 +12,17 @@ import {OrderItemComponent} from "../work-desk/order/order-item/order-item.compo
 import {OrdersItemComponent} from "../order-list/orders-item/orders-item.component";
 import {StoreModule} from "@ngrx/store";
 import {reducer} from "../../store/reducer";
-import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {environment} from "../../../environments/environment";
+import {ReactiveFormsModule} from "@angular/forms";
+import {EffectsModule} from "@ngrx/effects";
+import {AppEffects} from "../../store/effects";
+import {RegisterComponent} from "../register/register.component";
 
 const routes: Routes = [
   {
     path: 'home', component: WorkDeskComponent, children: []
   },
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: 'register', component: RegisterComponent},
   {path: 'orders', component: OrderListComponent},
   {path: 'login', component: LoginComponent}
 
@@ -35,21 +38,21 @@ const routes: Routes = [
     ItemComponent,
     OrderListComponent,
     OrderComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   exports: [
-    HeaderComponent
+    HeaderComponent,
+    ItemListComponent
   ],
   imports: [
     CommonModule,
     RouterLinkWithHref,
     RouterLink,
     RouterModule.forRoot(routes),
-    StoreModule.forRoot({}, {}),
     StoreModule.forFeature('appState', reducer),
-    StoreDevtoolsModule.instrument({
-      maxAge: 10
-    }),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    EffectsModule.forRoot([AppEffects]),
+    ReactiveFormsModule,
   ]
 })
 export class ShopModuleModule {

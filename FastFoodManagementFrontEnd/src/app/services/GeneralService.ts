@@ -12,6 +12,7 @@ import {EditItem} from "../models/Item/EditItem";
 import {Order} from "../models/Order/Order";
 import {Item} from "../models/Item/Item";
 import {CreateFastFoodShop} from "../models/FastFoodShop/CreateFastFoodShop";
+import {RefreshItems} from "../models/Item/RefreshItems";
 
 
 @Injectable({providedIn: 'root'})
@@ -23,7 +24,7 @@ export class GeneralService {
   constructor(private readonly httpClient: HttpClient) {
   }
 
-  login(username: string, password: string, shopId: FastFoodShopId): Observable<FastFoodShop> {
+  login(username: string, password: string, shopId: string): Observable<FastFoodShop> {
 
     let formData: any = new FormData();
     formData.append("username", username);
@@ -31,6 +32,16 @@ export class GeneralService {
     formData.append("shopId", shopId);
 
     return this.httpClient.post<FastFoodShop>("api/login", formData);
+  }
+
+  logout(): Observable<any> {
+    // this.httpClient.post("")
+
+    return this.httpClient.post<any>("api/logout", null);
+  }
+
+  refreshItems(shopId: FastFoodShopId): Observable<RefreshItems> {
+    return this.httpClient.get<RefreshItems>("api/home/refreshItems", {params: {'shopId': shopId.id}});
   }
 
   makeItem(itemForm: CreateItem): Observable<any> {
@@ -73,8 +84,9 @@ export class GeneralService {
     return this.httpClient.get<Order[]>("api/orders/view/between");
   }
 
-  createPlace(createPlaceForm: CreateFastFoodShop) {
+  registerPlace(createPlaceForm: CreateFastFoodShop): Observable<boolean> {
 
+    return this.httpClient.post<boolean>("/api/register", createPlaceForm);
   }
 
 }

@@ -4,9 +4,9 @@ import {Currency} from "../Val_objects/Currency";
 export interface CreateOrder {
 
   itemIds: number[];
-  workerUsername: string;
+  workerUsername: string | null;
   shopId: FastFoodShopId;
-  currency: Currency;
+  currency: string;
   amount: number;
 
 }

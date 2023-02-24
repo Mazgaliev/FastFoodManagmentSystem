@@ -12,6 +12,7 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.contact.Operator;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.contact.PhoneNumber;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Currency;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location;
+import com.example.fastfoodmanagmentbackend.Service.forms.FastFoodShopForm;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,8 @@ import java.util.Set;
 
 public interface FastFoodShopService {
 
-    FastFoodShop createShop(String name, String longitude, String latitude, String city, String ownerName, String ownerSurname, Operator ownerOperator, String ownerPhoneNumber, String owner_email);
+    FastFoodShop createShop(FastFoodShopForm form);
+    boolean deleteShop(FastFoodShopId shopId);
 
     void addItem(String name, Currency currency, Double amount, ItemType type, FastFoodShopId shopId);
 

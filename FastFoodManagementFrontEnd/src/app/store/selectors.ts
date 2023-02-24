@@ -26,4 +26,27 @@ export const selectOrderTotal = createSelector(
   selectAppState,
   (state) => state.orderState.total
 );
-
+export const selectShopId = createSelector(
+  selectAppState,
+  (state) => state.shopState.id
+)
+export const selectLoggedIn = createSelector(
+  selectAppState,
+  (state) => state.loggedIn
+)
+export const selectFoods = createSelector(
+  selectShop,
+  (state) => state.foods
+)
+export const selectDrinks = createSelector(
+  selectShop,
+  (state) => state.drinks
+)
+export const selectAdditives = createSelector(
+  selectShop,
+  (state) => state.additives
+)
+export const selectRole = createSelector(
+  selectShop,
+  (state) => state.currentWorker.role
+)

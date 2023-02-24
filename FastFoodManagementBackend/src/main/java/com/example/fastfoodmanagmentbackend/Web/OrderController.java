@@ -8,6 +8,7 @@ import com.example.fastfoodmanagmentbackend.Service.forms.DeleteOrderForm;
 import com.example.fastfoodmanagmentbackend.Service.forms.EditOrderForm;
 import com.example.fastfoodmanagmentbackend.Service.forms.OrderForm;
 import com.example.fastfoodmanagmentbackend.Service.forms.ViewOrdersBetweenDateForm;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -58,6 +59,7 @@ public class OrderController {
     }
 
     @GetMapping("/{shopId}")
+//    @PreAuthorize("hasRole('OWNER')")
     public Set<OrderDto> viewAllOrders(@PathVariable FastFoodShopId shopId) {
         return this.converter.convertToDto(this.fastFoodShopService.findAllOrders(shopId));
     }

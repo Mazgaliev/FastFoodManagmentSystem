@@ -25,7 +25,6 @@ public class CustomUsernameAndPasswordAuthentication implements AuthenticationPr
     private final PasswordEncoder passwordEncoder;
     private final Converter converter;
 
-    @Autowired
     private final HttpServletRequest httpServletRequest;
 
     public CustomUsernameAndPasswordAuthentication(FastFoodShopService fastFoodShopService, PasswordEncoder passwordEncoder, Converter converter, HttpServletRequest httpServletRequest) {

@@ -6,6 +6,7 @@ import com.example.fastfoodmanagmentbackend.Model.Exceptions.*;
 import com.example.fastfoodmanagmentbackend.Model.FastFoodShop;
 import com.example.fastfoodmanagmentbackend.Model.Item;
 import com.example.fastfoodmanagmentbackend.Model.Order;
+import com.example.fastfoodmanagmentbackend.Model.Person;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.Owner;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.WorkerId;
@@ -16,6 +17,7 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location;
 import com.example.fastfoodmanagmentbackend.Repository.FastFoodShopRepository;
 import com.example.fastfoodmanagmentbackend.Service.FastFoodShopService;
+import com.example.fastfoodmanagmentbackend.Service.forms.FastFoodShopForm;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,18 +39,33 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public FastFoodShop createShop(String name, String longitude, String latitude, String city, String ownerName, String ownerSurname, Operator ownerOperator, String ownerPhoneNumber, String owner_email) throws PlaceNameAlreadyInUseException {
-        FastFoodShop f = this.fastFoodShopRepository.findByNameLike(name);
+    public FastFoodShop createShop(FastFoodShopForm form) throws PlaceNameAlreadyInUseException {
+        FastFoodShop f = this.fastFoodShopRepository.findByNameLike(form.getName());
         if (f != null)
             throw new PlaceNameAlreadyInUseException();
 
-        Location loc = Location.valueOf(longitude, latitude, city);
-        PhoneNumber ownerPhone = PhoneNumber.valueOf(ownerOperator, ownerPhoneNumber);
-        Owner o = Owner.valueOf(ownerName, ownerSurname, owner_email, ownerPhone);
-        FastFoodShop fastFoodShop = new FastFoodShop(name, loc, o);
+        Location loc = Location.valueOf(form.getLongitude(), form.getLatitude(), form.getCity());
+        PhoneNumber ownerPhone = PhoneNumber.valueOf(form.getOwnerOperator(), form.getOwnerPhone());
+        Owner o = Owner.valueOf(form.getOwnerName(), form.getOwnerSurname(), form.getE_mail(), ownerPhone);
+        FastFoodShop fastFoodShop = new FastFoodShop(form.getName(), loc, o);
+        this.fastFoodShopRepository.saveAndFlush(fastFoodShop);
 
+        Person worker = new Person(o.getOwnerSurname(), passwordEncoder.encode("dummyPassword"), Role.OWNER);
+        FastFoodShop shop = this.fastFoodShopRepository.findById(fastFoodShop.getId()).orElseThrow(ShopWithIdDoesntExistException::new);
+        shop.addWorker(worker);
 
-        return this.fastFoodShopRepository.saveAndFlush(fastFoodShop);
+        return this.fastFoodShopRepository.save(shop);
+    }
+
+    @Override
+    public boolean deleteShop(FastFoodShopId shopId) {
+        FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
+        Set<Person> workers = shop.getWorkers();
+        for (Person w : workers) {
+            shop.removeWorker(w.getId());
+        }
+        this.fastFoodShopRepository.delete(shop);
+        return true;
     }
 
     @Override
@@ -125,7 +142,8 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     @Override
     public void createShopWorker(String username, String password, Role role, FastFoodShopId shopId) {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
-        shop.addWorker(username, this.passwordEncoder.encode(password), role);
+        Person p = new Person(username, this.passwordEncoder.encode(password), role);
+        shop.addWorker(p);
         this.fastFoodShopRepository.saveAndFlush(shop);
     }
 

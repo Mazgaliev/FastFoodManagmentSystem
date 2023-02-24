@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {PersonRole} from "../../models/Person/PersonRole";
 
 @Component({
   selector: 'app-header',
@@ -7,17 +8,23 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+
   @Input() shopName: string = "";
   @Input() loggedIn: boolean = false;
-
+  @Input() role: PersonRole = PersonRole.EMPTY;
+  @Output() logoutEmitter: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+  public personRole = PersonRole;
+  isOwner: boolean = false;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.isOwner =this.role.toString() == PersonRole[PersonRole.OWNER]
   }
 
   logout() {
 
+    this.logoutEmitter.emit(true);
   }
 }

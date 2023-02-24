@@ -1,8 +1,10 @@
 <div class="row">
   <div class="col-12">
-    <app-order [order]="($orderState|async)"
+    <app-order [order]="($orderState|async)!"
                (addItemEmitter)="addItemCount($event)"
-               (removeItemEmitter)="lowerItemCount($event)">
+               (removeItemEmitter)="lowerItemCount($event)"
+               (clearAllItemsWithIdEmitter)="clearAllItemsInOrder($event)"
+               (saveOrderEmitter)="makeOrder($event)">
 
     </app-order>
   </div>
@@ -12,9 +14,9 @@
 <br>
 <br>
 <br>
-<app-item-list [additives]="($fastFoodShop|async)!.additives"
-               [foods]="($fastFoodShop|async)!.foods"
-               [drinks]="($fastFoodShop|async)!.drinks"
+<app-item-list *ngIf="$foods && $drinks && $additives" [foods]="($foods|async)!"
+               [drinks]="($drinks|async)!"
+               [additives]="($additives|async)!"
                (addItemToOrderEmitter)="addItemToOrder($event)">
 
 </app-item-list>

@@ -1,6 +1,15 @@
 import {createAction, props} from "@ngrx/store";
 import {Order} from "../models/Order/Order";
 import {Item} from "../models/Item/Item";
+import {OrderItem} from "../models/Order/OrderItem";
+import {FastFoodShopId} from "../models/FastFoodShop/FastFoodShopId";
+import {FastFoodShop} from "../models/FastFoodShop/FastFoodShop";
+import {RefreshItems} from "../models/Item/RefreshItems";
+import {CreateItem} from "../models/Item/CreateItem";
+import {DeleteItem} from "../models/Item/DeleteItem";
+import {EditItem} from "../models/Item/EditItem";
+import {CreateOrder} from "../models/Order/CreateOrder";
+import {CreateFastFoodShop} from "../models/FastFoodShop/CreateFastFoodShop";
 
 const enum Actions {
   FETCH_ORDERS = '[Order] Get orders',
@@ -29,11 +38,18 @@ const enum Actions {
   DELETE_ITEM_SUCCESS = '[Item] Delete item successfully',
   ADD_ITEM_COUNT = '[Item] Add item count',
   REDUCE_ITEM_COUNT = '[Item] Reduce item count',
+  REFRESH_ITEMS = '[Item] Refresh items',
+  REFRESH_ITEMS_SUCCESS = '[Item] Refresh items successfully',
 
   LOGIN = '[General] Log in',
   LOGIN_SUCCESS = '[General] Log in successfully',
   LOGIN_FAIL = '[General] Log in failure',
   LOGOUT = '[General] Log out',
+  LOGOUT_SUCCESS = '[General] Log out successfully',
+  REGISTER_SHOP = '[General] Register a store',
+  REGISTER_SHOP_SUCCESS = '[General] Register a store successfully',
+  REGISTER_WORKER = '[General] Register a worker',
+  REGISTER_WORKER_SUCCESS = '[General] Register a worker successfully'
 
 
 }
@@ -48,7 +64,7 @@ export const reduceItemCount = createAction(
 )
 export const getOrders = createAction(
   Actions.FETCH_ORDERS,
-  props<{ shopId: string }>()
+  props<{ shopId: FastFoodShopId }>()
 )
 export const getOrdersSuccess = createAction(
   Actions.FETCH_ORDERS_SUCCESS,
@@ -60,18 +76,12 @@ export const getOrdersFail = createAction(
 )
 export const addToOrder = createAction(
   Actions.ADD_TO_ORDER,
-  props<{ item: Item }>()
+  props<{ item: OrderItem }>()
 )
-export const addToOrderSuccess = createAction(
-  Actions.ADD_TO_ORDER_SUCCESS,
-)
-export const addToOrderFail = createAction(
-  Actions.ADD_TO_ORDER_FAIL,
-  props<{ error: string }>
-)
+
 export const saveOrder = createAction(
   Actions.SAVE_ORDER,
-  props<{ order: Order }>
+  props<{ order: CreateOrder }>()
 )
 export const saveOrderSuccess = createAction(
   Actions.SAVE_ORDER_SUCCESS,
@@ -82,13 +92,7 @@ export const saveOrderFail = createAction(
 )
 export const removeItemFromOrder = createAction(
   Actions.REMOVE_FROM_ORDER,
-  props<{ item: Item }>()
-)
-export const removeItemFromOrderSuccess = createAction(
-  Actions.REMOVE_FROM_ORDER_SUCCESS
-)
-export const removeItemFromOrderFail = createAction(
-  Actions.REMOVE_FROM_ORDER_FAIL
+  props<{ item: OrderItem }>()
 )
 export const removeOrder = createAction(
   Actions.REMOVE_ORDER,
@@ -108,7 +112,7 @@ export const editOrderSuccess = createAction(
 
 export const createItem = createAction(
   Actions.CREATE_ITEM,
-  props<{ item: Item }>()
+  props<{ item: CreateItem }>()
 )
 
 export const createItemSuccess = createAction(
@@ -117,7 +121,7 @@ export const createItemSuccess = createAction(
 
 export const editItem = createAction(
   Actions.EDIT_ITEM,
-  props<{ item: Item }>()
+  props<{ item: EditItem }>()
 )
 export const editItemSuccess = createAction(
   Actions.EDIT_ITEM_SUCCESS,
@@ -125,18 +129,19 @@ export const editItemSuccess = createAction(
 
 export const deleteItem = createAction(
   Actions.DELETE_ITEM,
-  props<{ item: Item }>()
+  props<{ item: DeleteItem }>()
 )
 export const deleteItemSuccess = createAction(
-  Actions.DELETE_ITEM,
+  Actions.DELETE_ITEM_SUCCESS,
 )
 export const login = createAction(
   Actions.LOGIN,
-  props<{ credentials: { username: string, password: string, shopId: string } }>
+  props<{ username: string, password: string, shopId: string }>()
 )
 
 export const loginSuccess = createAction(
-  Actions.LOGIN_SUCCESS
+  Actions.LOGIN_SUCCESS,
+  props<{ shop: FastFoodShop }>()
 )
 export const loginFail = createAction(
   Actions.LOGIN_FAIL,
@@ -144,5 +149,23 @@ export const loginFail = createAction(
 )
 
 export const logout = createAction(
-  Actions.LOGOUT
+  Actions.LOGOUT,
+)
+export const logoutSuccess = createAction(
+  Actions.LOGOUT_SUCCESS,
+)
+export const refreshItems = createAction(
+  Actions.REFRESH_ITEMS,
+)
+export const refreshItemsSuccess = createAction(
+  Actions.REFRESH_ITEMS_SUCCESS,
+  props<{ items: RefreshItems }>()
+)
+
+export const registerStore = createAction(
+  Actions.REGISTER_SHOP,
+  props<{ shop: CreateFastFoodShop }>()
+)
+export const registerStoreSuccess = createAction(
+  Actions.REGISTER_SHOP_SUCCESS
 )

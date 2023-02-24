@@ -1,4 +1,5 @@
 export enum PersonRole {
   WORKER,
-  OWNER
+  OWNER,
+  EMPTY
 }
