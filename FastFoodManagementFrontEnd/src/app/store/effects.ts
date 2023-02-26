@@ -92,6 +92,15 @@ export class AppEffects {
     )
   )
 
+  $createWorker = createEffect(
+    ()=> this.actions$.pipe(
+      ofType(AppActions.createWorker),
+      exhaustMap(workerForm =>this.generalService.registerWorker(workerForm.worker).pipe(
+        map(()=> AppActions.createWorkerSuccess())
+      ))
+    )
+  )
+
   //$createUser
   //$removeUser
   //$saveOrder

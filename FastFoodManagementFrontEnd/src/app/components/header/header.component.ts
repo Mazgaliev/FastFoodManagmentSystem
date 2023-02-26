@@ -13,7 +13,6 @@ export class HeaderComponent implements OnInit {
   @Input() loggedIn: boolean = false;
   @Input() role: PersonRole = PersonRole.EMPTY;
   @Output() logoutEmitter: EventEmitter<Boolean> = new EventEmitter<Boolean>();
-  public personRole = PersonRole;
   isOwner: boolean = false;
 
   constructor() {

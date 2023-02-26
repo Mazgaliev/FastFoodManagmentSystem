@@ -13,6 +13,8 @@ import {Order} from "../models/Order/Order";
 import {Item} from "../models/Item/Item";
 import {CreateFastFoodShop} from "../models/FastFoodShop/CreateFastFoodShop";
 import {RefreshItems} from "../models/Item/RefreshItems";
+import {WorkerForm} from "../models/Person/WorkerForm";
+import {Person} from "../models/Person/Person";
 
 
 @Injectable({providedIn: 'root'})
@@ -87,6 +89,14 @@ export class GeneralService {
   registerPlace(createPlaceForm: CreateFastFoodShop): Observable<boolean> {
 
     return this.httpClient.post<boolean>("/api/register", createPlaceForm);
+  }
+
+  registerWorker(form: WorkerForm): Observable<boolean> {
+    return this.httpClient.post<boolean>("/api/register/user", form);
+  }
+
+  getWorkers(): Observable<Person[]> {
+    return this.httpClient.get<Person[]>("/api/home/workers");
   }
 
 }

@@ -10,6 +10,7 @@ import {DeleteItem} from "../models/Item/DeleteItem";
 import {EditItem} from "../models/Item/EditItem";
 import {CreateOrder} from "../models/Order/CreateOrder";
 import {CreateFastFoodShop} from "../models/FastFoodShop/CreateFastFoodShop";
+import {WorkerForm} from "../models/Person/WorkerForm";
 
 const enum Actions {
   FETCH_ORDERS = '[Order] Get orders',
@@ -49,10 +50,18 @@ const enum Actions {
   REGISTER_SHOP = '[General] Register a store',
   REGISTER_SHOP_SUCCESS = '[General] Register a store successfully',
   REGISTER_WORKER = '[General] Register a worker',
-  REGISTER_WORKER_SUCCESS = '[General] Register a worker successfully'
+  REGISTER_WORKER_SUCCESS = '[General] Register a worker successfully',
 
 
 }
+
+export const createWorker = createAction(
+  Actions.REGISTER_WORKER,
+  props<{ worker: WorkerForm }>()
+)
+export const createWorkerSuccess = createAction(
+  Actions.REGISTER_WORKER_SUCCESS
+)
 
 export const addItemCount = createAction(
   Actions.ADD_ITEM_COUNT,

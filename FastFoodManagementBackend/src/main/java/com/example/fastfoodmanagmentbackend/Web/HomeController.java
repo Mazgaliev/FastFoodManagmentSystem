@@ -25,7 +25,6 @@ public class HomeController {
     }
 
     @GetMapping
-
     public FastFoodShopDto homePage(Authentication authentication) {
 
         FastFoodShopDto dto = (FastFoodShopDto) authentication.getPrincipal();

@@ -16,11 +16,15 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {EffectsModule} from "@ngrx/effects";
 import {AppEffects} from "../../store/effects";
 import {RegisterComponent} from "../register/register.component";
+import {ManageStaffComponent} from "../manage-staff/manage-staff.component";
+import {CreateWorkerComponent} from "../create-worker/create-worker.component";
 
 const routes: Routes = [
   {
     path: 'home', component: WorkDeskComponent, children: []
   },
+  {path: 'manage', component: ManageStaffComponent},
+  {path: 'create', component: CreateWorkerComponent},
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'register', component: RegisterComponent},
   {path: 'orders', component: OrderListComponent},
@@ -39,7 +43,9 @@ const routes: Routes = [
     OrderListComponent,
     OrderComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ManageStaffComponent,
+    CreateWorkerComponent
   ],
   exports: [
     HeaderComponent,

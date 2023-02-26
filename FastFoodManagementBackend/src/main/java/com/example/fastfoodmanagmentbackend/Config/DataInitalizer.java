@@ -23,8 +23,8 @@ public class DataInitalizer {
 
 //        @PostConstruct
     public void init() {
-        FastFoodShop shop = this.fastFoodShopService.createShop("name", "123", "321", "Novo Selo", "Mite", "Mazgaliev", Operator.A1, "123456", "email");
-        this.fastFoodShopService.addItem("itemName", Currency.MKD, 80.0, ItemType.FOOD, shop.getId());
-        this.fastFoodShopService.createShopWorker("username", "password", Role.WORKER, shop.getId());
+//        FastFoodShop shop = this.fastFoodShopService.createShop("name", "123", "321", "Novo Selo", "Mite", "Mazgaliev", Operator.A1, "123456", "email");
+//        this.fastFoodShopService.addItem("itemName", Currency.MKD, 80.0, ItemType.FOOD, shop.getId());
+//        this.fastFoodShopService.createShopWorker("username", "password", Role.WORKER, shop.getId());
     }
 }
