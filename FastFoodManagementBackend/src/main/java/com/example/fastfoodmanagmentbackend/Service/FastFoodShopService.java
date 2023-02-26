@@ -52,4 +52,6 @@ public interface FastFoodShopService {
 
     Set<Item> findAllItems(FastFoodShopId shopId);
 
+    Set<Person> findAllWorkers(FastFoodShopId shopId);
+
 }

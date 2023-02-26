@@ -89,8 +89,14 @@ public class Converter {
         return dto;
     }
 
+    public Set<WorkerDto> convertToWorkerDto(Set<Person> workers) {
+
+        return workers.stream().map(this::convertToDto).collect(Collectors.toSet());
+    }
     public Set<OrderDto> convertToDto(Set<Order> orders) {
 
         return orders.stream().map(this::convertToDto).collect(Collectors.toSet());
     }
+
+
 }

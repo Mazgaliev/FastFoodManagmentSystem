@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping(value = {"/api", "/api/home", "/"})
 public class HomeController {
@@ -51,6 +53,13 @@ public class HomeController {
 
 
         return this.fastFoodShopService.deleteShop(shopId);
+    }
+
+    @GetMapping("/workers/{id}")
+    public Set<WorkerDto> getShopWorkers(@PathVariable FastFoodShopId id) {
+        Set<WorkerDto> workers = converter.convertToWorkerDto(this.fastFoodShopService.findAllWorkers(id));
+
+        return workers;
     }
 
 

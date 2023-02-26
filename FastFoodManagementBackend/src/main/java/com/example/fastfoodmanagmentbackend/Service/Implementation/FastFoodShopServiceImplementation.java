@@ -186,4 +186,11 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
 
         return shop.getItems();
     }
+
+    @Override
+    public Set<Person> findAllWorkers(FastFoodShopId shopId) {
+        FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
+
+        return shop.getWorkers();
+    }
 }
