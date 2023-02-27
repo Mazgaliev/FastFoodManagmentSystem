@@ -19,7 +19,7 @@ export const defaultShop: FastFoodShop = {
     id: {
       id: ''
     },
-    username: "Mite",
+    username: "",
     role: PersonRole.WORKER,
   },
   owner: {

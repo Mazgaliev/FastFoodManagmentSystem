@@ -1,15 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Item} from "../../../models/Item/Item";
-import {ItemType} from "../../../models/Item/ItemType";
-import {Store} from "@ngrx/store";
-import {Observable} from "rxjs";
-import {Selectors} from "../../../store";
-import {selectOrderItems} from "../../../store/selectors";
-import {Money} from "../../../models/Val_objects/Money";
-import {Order} from "../../../models/Order/Order";
 import {OrderState} from "../../../models/Order/OrderState";
 import {OrderItem} from "../../../models/Order/OrderItem";
-import {CreateOrder} from "../../../models/Order/CreateOrder";
 
 @Component({
   selector: 'app-order',
@@ -54,6 +45,8 @@ export class OrderComponent implements OnInit {
   }
 
   makeOrder(order: OrderState) {
+
+
     this.saveOrderEmitter.emit(this.order);
   }
 }

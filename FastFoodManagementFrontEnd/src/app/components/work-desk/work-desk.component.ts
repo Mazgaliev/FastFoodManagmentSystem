@@ -44,7 +44,7 @@ export class WorkDeskComponent implements OnInit {
   }
 
   clearAllItemsInOrder(item: OrderItem) {
-  this.store.dispatch(AppActions.removeItemFromOrder({item:item}))
+    this.store.dispatch(AppActions.removeItemFromOrder({item: item}))
   }
 
   lowerItemCount(event: { item: OrderItem, count: number, }) {
@@ -64,8 +64,12 @@ export class WorkDeskComponent implements OnInit {
   makeOrder(order: OrderState) {
     const ids = order.items.map(item => item.id);
     let shopId = '';
+    let worker = "";
     this.$fastFoodShop.subscribe(data => {
       shopId = data.id.id
+    })
+    this.store.select(Selectors.selectShop).subscribe(shop => {
+      worker = shop.currentWorker.username
     })
     const createOrder: CreateOrder = {
       shopId: {
@@ -74,8 +78,7 @@ export class WorkDeskComponent implements OnInit {
       itemIds: ids,
       amount: order.total.amount,
       currency: order.total.currency,
-      workerUsername: order.worker.username,
-
+      workerUsername: worker,
     }
     this.store.dispatch(AppActions.saveOrder({order: createOrder}))
   }

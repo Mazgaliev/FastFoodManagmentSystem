@@ -128,6 +128,10 @@ export const reducer = createReducer(
   })),
   on(logout, (state) => ({
     ...state,
+    shopState: defaultShop,
+    orderState: defaultOrders,
+    allOrders: [],
+    loggedIn: false
   })),
   on(editOrder, (state) => ({
     ...state

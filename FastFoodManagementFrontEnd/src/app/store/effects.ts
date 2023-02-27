@@ -25,7 +25,6 @@ export class AppEffects {
       exhaustMap(data =>
         this.generalService.login(data.username, data.password, data.shopId).pipe(
           map(shop => {
-
             return AppActions.loginSuccess({shop: shop});
           })
         ))
