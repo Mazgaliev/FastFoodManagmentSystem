@@ -11,6 +11,8 @@ import {EditItem} from "../models/Item/EditItem";
 import {CreateOrder} from "../models/Order/CreateOrder";
 import {CreateFastFoodShop} from "../models/FastFoodShop/CreateFastFoodShop";
 import {WorkerForm} from "../models/Person/WorkerForm";
+import {Person} from "../models/Person/Person";
+import {RemoveWorkerForm} from "../models/Person/RemoveWorkerForm";
 
 const enum Actions {
   FETCH_ORDERS = '[Order] Get orders',
@@ -53,8 +55,29 @@ const enum Actions {
   REGISTER_WORKER_SUCCESS = '[General] Register a worker successfully',
 
 
+  FETCH_WORKERS = '[Worker] Refresh shop workers',
+  FETCH_WORKERS_SUCCESS = '[Worker] Refresh shop workers success',
+  REMOVE_WORKER = '[Worker] delete a worker',
+  DELETE_WORKER_SUCCESS = '[Worker] delete a worker successfully'
+
 }
 
+export const removeWorker = createAction(
+  Actions.REMOVE_WORKER,
+  props<{ deletionForm: RemoveWorkerForm }>()
+)
+export const removeWorkerSuccess = createAction(
+  Actions.DELETE_WORKER_SUCCESS,
+)
+
+export const fetchWorkers = createAction(
+  Actions.FETCH_WORKERS,
+  props<{ id: FastFoodShopId }>()
+)
+export const fetchWorkersSuccess = createAction(
+  Actions.FETCH_WORKERS_SUCCESS,
+  props<{ workers: Person[] }>()
+)
 export const createWorker = createAction(
   Actions.REGISTER_WORKER,
   props<{ worker: WorkerForm }>()

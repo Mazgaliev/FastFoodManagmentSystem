@@ -3,6 +3,7 @@ import {Order} from "../models/Order/Order";
 import {PersonRole} from "../models/Person/PersonRole";
 import {OrderState} from "../models/Order/OrderState";
 import {ItemType} from "../models/Item/ItemType";
+import {Person} from "../models/Person/Person";
 
 export const defaultShop: FastFoodShop = {
   id: {
@@ -53,6 +54,7 @@ export const defaultOrders: OrderState = {
 export interface AppState {
   shopState: FastFoodShop;
   orderState: OrderState;
+  workers: Person[];
   allOrders: Order[];
   loggedIn: boolean;
 }
@@ -61,5 +63,6 @@ export const initialState: AppState = {
   shopState: defaultShop,
   orderState: defaultOrders,
   allOrders: [],
+  workers: [],
   loggedIn: false
 }

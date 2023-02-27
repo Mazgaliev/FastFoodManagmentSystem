@@ -134,12 +134,6 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     }
 
     @Override
-    public void deleteFastFoodShop(FastFoodShopId shopId) {
-        FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
-        this.fastFoodShopRepository.delete(shop);
-    }
-
-    @Override
     public void createShopWorker(String username, String password, Role role, FastFoodShopId shopId) {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
         Person p = new Person(username, this.passwordEncoder.encode(password), role);
@@ -148,12 +142,18 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     }
 
     @Override
-    public void deleteShopWorker(WorkerId workerId, FastFoodShopId shopId) throws ShopWithIdDoesntExistException, PlaceMustHaveOwnerException {
+    public boolean deleteShopWorker(WorkerId workerId, FastFoodShopId shopId) throws ShopWithIdDoesntExistException, PlaceMustHaveOwnerException {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
 
-        shop.removeWorker(workerId);
+        try {
+            shop.removeWorker(workerId);
 
-        this.fastFoodShopRepository.saveAndFlush(shop);
+            this.fastFoodShopRepository.saveAndFlush(shop);
+            return true;
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override

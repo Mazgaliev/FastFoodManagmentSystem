@@ -93,13 +93,32 @@ export class AppEffects {
   )
 
   $createWorker = createEffect(
-    ()=> this.actions$.pipe(
+    () => this.actions$.pipe(
       ofType(AppActions.createWorker),
-      exhaustMap(workerForm =>this.generalService.registerWorker(workerForm.worker).pipe(
-        map(()=> AppActions.createWorkerSuccess())
+      exhaustMap(workerForm => this.generalService.registerWorker(workerForm.worker).pipe(
+        map(() => AppActions.createWorkerSuccess())
       ))
     )
   )
+
+  $fetchWorkers = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.fetchWorkers),
+      exhaustMap(shopId => this.generalService.getWorkers(shopId.id).pipe(
+        map(workers => AppActions.fetchWorkersSuccess({workers: workers}))
+      ))
+    )
+  )
+
+  $removeWorker = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.removeWorker),
+      exhaustMap(workerForm => this.generalService.removeWorker(workerForm.deletionForm).pipe(
+        map(() => AppActions.fetchWorkers({id: workerForm.deletionForm.shopId}))
+      ))
+    )
+  )
+
 
   //$createUser
   //$removeUser

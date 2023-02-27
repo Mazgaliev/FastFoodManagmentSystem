@@ -41,10 +41,10 @@ public class HomeController {
     }
 
     @PostMapping("/remove")
-    public WorkerDto removeWorker(@RequestBody DeleteWorkerForm form) {
-        this.fastFoodShopService.deleteShopWorker(form.getWorkerId(), form.getShopId());
+    public boolean removeWorker(@RequestBody DeleteWorkerForm form) {
 
-        return null;
+
+        return this.fastFoodShopService.deleteShopWorker(form.getWorkerId(), form.getShopId());
     }
 
     @DeleteMapping("/delete")

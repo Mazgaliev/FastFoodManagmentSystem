@@ -62,12 +62,12 @@ export class WorkDeskComponent implements OnInit {
   }
 
   makeOrder(order: OrderState) {
-    var ids = order.items.map(item => item.id);
-    var shopId = '';
+    const ids = order.items.map(item => item.id);
+    let shopId = '';
     this.$fastFoodShop.subscribe(data => {
       shopId = data.id.id
     })
-    var createOrder: CreateOrder = {
+    const createOrder: CreateOrder = {
       shopId: {
         id: shopId
       },

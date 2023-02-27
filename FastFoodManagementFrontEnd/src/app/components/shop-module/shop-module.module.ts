@@ -18,6 +18,7 @@ import {AppEffects} from "../../store/effects";
 import {RegisterComponent} from "../register/register.component";
 import {ManageStaffComponent} from "../manage-staff/manage-staff.component";
 import {CreateWorkerComponent} from "../create-worker/create-worker.component";
+import {StaffComponent} from "../manage-staff/staff/staff.component";
 
 const routes: Routes = [
   {
@@ -45,7 +46,8 @@ const routes: Routes = [
     LoginComponent,
     RegisterComponent,
     ManageStaffComponent,
-    CreateWorkerComponent
+    CreateWorkerComponent,
+    StaffComponent
   ],
   exports: [
     HeaderComponent,

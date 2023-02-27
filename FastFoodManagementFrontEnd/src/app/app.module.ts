@@ -10,8 +10,6 @@ import {CommonModule} from "@angular/common";
 import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
-import {CreateWorkerComponent} from './components/create-worker/create-worker.component';
-import {ManageStaffComponent} from './components/manage-staff/manage-staff.component';
 
 @NgModule({
   declarations: [

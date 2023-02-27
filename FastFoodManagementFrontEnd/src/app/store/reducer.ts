@@ -10,7 +10,7 @@ import {
   editItem,
   editItemSuccess,
   editOrder,
-  editOrderSuccess,
+  editOrderSuccess, fetchWorkers, fetchWorkersSuccess,
   getOrders,
   getOrdersFail,
   getOrdersSuccess,
@@ -158,6 +158,14 @@ export const reducer = createReducer(
   })),
   on(registerStoreSuccess, (state) => ({
     ...state,
+  })),
+  on(fetchWorkers, (state) => ({
+    ...state,
+  }))
+  ,
+  on(fetchWorkersSuccess, (state, {workers}) => ({
+    ...state,
+    workers: [...workers]
   }))
 );
 

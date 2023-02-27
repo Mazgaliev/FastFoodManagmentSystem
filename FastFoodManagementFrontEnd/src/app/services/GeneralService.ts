@@ -15,6 +15,7 @@ import {CreateFastFoodShop} from "../models/FastFoodShop/CreateFastFoodShop";
 import {RefreshItems} from "../models/Item/RefreshItems";
 import {WorkerForm} from "../models/Person/WorkerForm";
 import {Person} from "../models/Person/Person";
+import {RemoveWorkerForm} from "../models/Person/RemoveWorkerForm";
 
 
 @Injectable({providedIn: 'root'})
@@ -95,8 +96,15 @@ export class GeneralService {
     return this.httpClient.post<boolean>("/api/register/user", form);
   }
 
-  getWorkers(): Observable<Person[]> {
-    return this.httpClient.get<Person[]>("/api/home/workers");
+  getWorkers(shopId: FastFoodShopId): Observable<Person[]> {
+    const url = "/api/home/workers/" + shopId.id;
+    return this.httpClient.get<Person[]>(url);
+  }
+
+  removeWorker(form: RemoveWorkerForm): Observable<boolean> {
+
+
+    return this.httpClient.post<boolean>("/api/home/remove", form);
   }
 
 }

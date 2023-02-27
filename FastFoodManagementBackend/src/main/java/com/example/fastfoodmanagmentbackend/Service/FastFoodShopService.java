@@ -40,11 +40,10 @@ public interface FastFoodShopService {
 
     Set<Order> findAllOrdersBetween(LocalDateTime from, LocalDateTime to, FastFoodShopId shopId);
 
-    void deleteFastFoodShop(FastFoodShopId shopId);
 
     void createShopWorker(String username, String password, Role role, FastFoodShopId shopId);
 
-    void deleteShopWorker(WorkerId workerId, FastFoodShopId shopId);
+    boolean deleteShopWorker(WorkerId workerId, FastFoodShopId shopId);
 
     UserDetails loadUserByUsernameAndShop(String username, FastFoodShopId fastFoodShopId);
 

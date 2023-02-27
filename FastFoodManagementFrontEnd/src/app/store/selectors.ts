@@ -50,3 +50,7 @@ export const selectRole = createSelector(
   selectShop,
   (state) => state.currentWorker.role
 )
+export const selectWorkers = createSelector(
+  selectAppState,
+  (state) => state.workers
+)
