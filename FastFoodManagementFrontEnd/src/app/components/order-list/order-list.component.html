@@ -1,1 +1,16 @@
-<p>order-list works!</p>
+<section id="header" class="jumbotron text-center">
+  <h1 class="display-3">Details about orders</h1>
+</section>
+<br>
+<br>
+<br>
+<ng-container>
+  <div class="container-fluid">
+    <div class="row" *ngFor="let order of ($orders|async)!">
+    <app-orders-item [item]="order!"
+    (removeOrderEmitter)="removeOrder($event)">
+
+    </app-orders-item>
+    </div>
+  </div>
+</ng-container>

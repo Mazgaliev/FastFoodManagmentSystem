@@ -118,6 +118,15 @@ export class AppEffects {
     )
   )
 
+  $deleteOrder = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.removeOrder),
+      exhaustMap(delForm => this.generalService.deleteOrder(delForm.order).pipe(
+        map(() => AppActions.getOrders({shopId: delForm.order.shopId}))
+      ))
+    )
+  )
+
 
   //$createUser
   //$removeUser

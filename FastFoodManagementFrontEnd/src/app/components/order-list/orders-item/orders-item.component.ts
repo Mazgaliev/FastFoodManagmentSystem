@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Order} from "../../../models/Order/Order";
 
 @Component({
   selector: 'app-orders-item',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersItemComponent implements OnInit {
 
-  constructor() { }
+
+  @Input() item!: Order;
+  @Output() removeOrderEmitter: EventEmitter<number> = new EventEmitter<number>();
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  edit() {
+
+  }
+
+  remove() {
+    this.removeOrderEmitter.emit(this.item.id)
   }
 
 }

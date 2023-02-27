@@ -13,6 +13,7 @@ import {CreateFastFoodShop} from "../models/FastFoodShop/CreateFastFoodShop";
 import {WorkerForm} from "../models/Person/WorkerForm";
 import {Person} from "../models/Person/Person";
 import {RemoveWorkerForm} from "../models/Person/RemoveWorkerForm";
+import {DeleteOrder} from "../models/Order/DeleteOrder";
 
 const enum Actions {
   FETCH_ORDERS = '[Order] Get orders',
@@ -128,7 +129,7 @@ export const removeItemFromOrder = createAction(
 )
 export const removeOrder = createAction(
   Actions.REMOVE_ORDER,
-  props<{ order: Order }>()
+  props<{ order: DeleteOrder }>()
 )
 export const removeOrderSuccess = createAction(
   Actions.REMOVE_ORDER_SUCCESS
