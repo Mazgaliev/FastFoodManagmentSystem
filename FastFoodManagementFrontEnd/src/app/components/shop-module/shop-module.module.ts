@@ -12,13 +12,18 @@ import {OrderItemComponent} from "../work-desk/order/order-item/order-item.compo
 import {OrdersItemComponent} from "../order-list/orders-item/orders-item.component";
 import {StoreModule} from "@ngrx/store";
 import {reducer} from "../../store/reducer";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EffectsModule} from "@ngrx/effects";
 import {AppEffects} from "../../store/effects";
 import {RegisterComponent} from "../register/register.component";
 import {ManageStaffComponent} from "../manage-staff/manage-staff.component";
 import {CreateWorkerComponent} from "../create-worker/create-worker.component";
 import {StaffComponent} from "../manage-staff/staff/staff.component";
+import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
+import {ModalComponent} from "../order-list/modal/modal.component";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 const routes: Routes = [
   {
@@ -47,7 +52,8 @@ const routes: Routes = [
     RegisterComponent,
     ManageStaffComponent,
     CreateWorkerComponent,
-    StaffComponent
+    StaffComponent,
+    ModalComponent
   ],
   exports: [
     HeaderComponent,
@@ -61,6 +67,11 @@ const routes: Routes = [
     StoreModule.forFeature('appState', reducer),
     EffectsModule.forRoot([AppEffects]),
     ReactiveFormsModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    FormsModule,
+    NgbModule
   ]
 })
 export class ShopModuleModule {

@@ -37,5 +37,5 @@ export class OrderListComponent implements OnInit {
     }
     this.store.dispatch(AppActions.removeOrder({order: deleteOrderForm}))
   }
-
 }
+

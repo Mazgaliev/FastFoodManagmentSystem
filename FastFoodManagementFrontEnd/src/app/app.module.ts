@@ -15,6 +15,7 @@ import {environment} from "../environments/environment";
   declarations: [
     AppComponent,
     ShopModuleComponent,
+
   ],
   imports: [
     CommonModule,
