@@ -12,6 +12,7 @@ import com.example.fastfoodmanagmentbackend.Model.base.AbstractEntity;
 import com.example.fastfoodmanagmentbackend.Model.base.DomainObjectId;
 import lombok.Getter;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
+@Component
 public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
 
     private String name;

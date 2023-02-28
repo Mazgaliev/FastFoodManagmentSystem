@@ -65,6 +65,18 @@ export class AppEffects {
       ))
     )
   )
+
+  // $refreshItems = createEffect(
+  //   () => this.actions$.pipe(
+  //     ofType(AppActions.refreshItems),
+  //     withLatestFrom(this.store.select(Selectors.selectShopId)),
+  //     exhaustMap(([_, id]) => {
+  //       return this.generalService.refreshItems(id).pipe(
+  //         map(data => AppActions.refreshItemsSuccess({items: data}))
+  //       )
+  //     })
+  //   )
+  // )
   $editItem = createEffect(
     () => this.actions$.pipe(
       ofType(AppActions.editItem),

@@ -30,6 +30,8 @@ import {environment} from "../environments/environment";
     RouterOutlet,
   ],
   providers: [],
+  exports: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

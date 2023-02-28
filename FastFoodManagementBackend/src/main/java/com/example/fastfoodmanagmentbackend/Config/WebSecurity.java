@@ -15,7 +15,8 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/api/login", "/api/register").permitAll()
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/api/login", "/api/register").permitAll()
                 .antMatchers("/", "/api", "/api/home", "/api/delete").hasAnyAuthority("WORKER", "OWNER")
 //                .antMatchers("/api/delete").hasRole("OWNER")
                 .and()

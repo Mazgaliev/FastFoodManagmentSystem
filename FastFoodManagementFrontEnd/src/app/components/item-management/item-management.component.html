@@ -1,0 +1,22 @@
+<section id="header" class="jumbotron text-center">
+  <h1 class="display-3">Manage your items</h1>
+</section>
+<br>
+<br>
+<ng-container class="container-fluid">
+  <div *ngFor="let item of ($foods|async)">
+    <app-shop-item
+      (deleteItemEmitter)="deleteItem($event)"
+      [item]="item">
+
+    </app-shop-item>
+  </div>
+  <div *ngFor="let item of ($drinks|async)">
+    <app-shop-item
+      (deleteItemEmitter)="deleteItem($event)"
+      [item]="item">
+    </app-shop-item>
+  </div>
+</ng-container>
+
+

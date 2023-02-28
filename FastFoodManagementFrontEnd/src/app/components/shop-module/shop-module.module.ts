@@ -25,11 +25,14 @@ import {ModalComponent} from "../order-list/modal/modal.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {CreateItemComponent} from "../create-item/create-item.component";
+import {ItemManagementComponent} from "../item-management/item-management.component";
+import {ShopItemComponent} from "../item-management/shop-item/shop-item.component";
 
 const routes: Routes = [
   {
     path: 'home', component: WorkDeskComponent, children: []
   },
+  {path: 'manageItem', component: ItemManagementComponent},
   {path: 'item', component: CreateItemComponent},
   {path: 'manage', component: ManageStaffComponent},
   {path: 'create', component: CreateWorkerComponent},
@@ -56,7 +59,9 @@ const routes: Routes = [
     CreateWorkerComponent,
     StaffComponent,
     ModalComponent,
-    CreateItemComponent
+    CreateItemComponent,
+    ItemManagementComponent,
+    ShopItemComponent
   ],
   exports: [
     HeaderComponent,
@@ -74,7 +79,7 @@ const routes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,
-    NgbModule
+    NgbModule,
   ]
 })
 export class ShopModuleModule {

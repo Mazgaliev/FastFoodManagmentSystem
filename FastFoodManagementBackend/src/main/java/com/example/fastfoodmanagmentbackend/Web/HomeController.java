@@ -8,6 +8,7 @@ import com.example.fastfoodmanagmentbackend.Service.dto.FastFoodShopDto;
 import com.example.fastfoodmanagmentbackend.Service.dto.ShopItemsDto;
 import com.example.fastfoodmanagmentbackend.Service.dto.WorkerDto;
 import com.example.fastfoodmanagmentbackend.Service.forms.DeleteWorkerForm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
