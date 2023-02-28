@@ -1,0 +1,44 @@
+<section id="header" class="jumbotron text-center">
+  <h1 class="display-3">Create a new worker</h1>
+</section>
+
+
+<div class="container">
+  <form [formGroup]="itemForm" class="form-signin mt-xl-5" method="post">
+
+    <p>
+      <label for="name" class="sr-only">Item Name</label>
+      <input formControlName="name" type="text" id="name" name="name" class="form-control"
+             placeholder="Name" required=""
+             autofocus="">
+    </p>
+    <p>
+      <label for="amount" class="sr-only">Password</label>
+      <input formControlName="amount" type="text" id="amount" name="amount" class="form-control"
+             placeholder="Total Amount"
+             required="">
+    </p>
+
+    <p>
+      <label for="currency" class="sr-only">Currency</label>
+      <select name="currency" id="currency" formControlName="currency" class="form-control">
+        <option value="0">MKD</option>
+        <option value="1">EUR</option>
+      </select>
+    </p>
+
+    <p>
+      <label for="type" class="sr-only">Item Type</label>
+      <select name="type" id="type" formControlName="itemType" class="form-control">
+        <option value="0">FOOD</option>
+        <option value="1">DRINK</option>
+      </select>
+    </p>
+  </form>
+  <button [routerLink]="'/home'" id="submit" class="btn btn-lg btn-primary btn-block" type="submit"
+          [disabled]="!itemForm.valid"
+          (click)="createItem()">Submit Form
+  </button>
+  <!--  <a href="/register" class="btn btn-block btn-light">Submit Form</a>-->
+
+</div>

@@ -1,8 +1,11 @@
 /* Modal Header */
 .modal-header {
-  padding: 2px 16px;
-  background-color: lightgray;
-  color: white;
+  /*padding: 2px 16px;*/
+  background-color: whitesmoke;
+  /*color: white;*/
+  align-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 /* Modal Body */
@@ -10,9 +13,9 @@
 
 /* Modal Footer */
 .modal-footer {
-  padding: 2px 16px;
+  /*padding: 2px 16px;*/
   background-color: lightgray;
-  color: white;
+  /*color: whitesmoke;*/
 }
 
 /* Modal Content */

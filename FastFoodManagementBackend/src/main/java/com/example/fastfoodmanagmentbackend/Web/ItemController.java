@@ -30,7 +30,7 @@ public class ItemController {
     @PostMapping("/add")
     public void addItem(@RequestBody ItemForm form) {
 
-        this.fastFoodShopService.addItem(form.getName(), form.getPrice().getCurrency(), form.getPrice().getAmount(), form.getType(), form.getShopId());
+        this.fastFoodShopService.addItem(form.getName(), form.getPrice().getCurrency(), form.getPrice().getAmount(), form.getItemType(), form.getShopId());
 
     }
 

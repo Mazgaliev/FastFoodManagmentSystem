@@ -14,7 +14,7 @@ public class ItemForm {
     String name;
 
     @NotNull
-    ItemType type;
+    ItemType itemType;
 
     @NotNull
     Money price;

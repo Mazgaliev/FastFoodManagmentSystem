@@ -1,5 +1,5 @@
-export enum ItemType{
+export enum ItemType {
   FOOD,
-  ADDITIVE,
-  DRINK
+  DRINK,
+  ADDITIVE
 }

@@ -24,11 +24,13 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {ModalComponent} from "../order-list/modal/modal.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {CreateItemComponent} from "../create-item/create-item.component";
 
 const routes: Routes = [
   {
     path: 'home', component: WorkDeskComponent, children: []
   },
+  {path: 'item', component: CreateItemComponent},
   {path: 'manage', component: ManageStaffComponent},
   {path: 'create', component: CreateWorkerComponent},
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -53,7 +55,8 @@ const routes: Routes = [
     ManageStaffComponent,
     CreateWorkerComponent,
     StaffComponent,
-    ModalComponent
+    ModalComponent,
+    CreateItemComponent
   ],
   exports: [
     HeaderComponent,
