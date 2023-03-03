@@ -12,32 +12,30 @@
     </button>
   </div>
 </div>
-
+<br><br><br>
 <ng-container *ngIf="showFood">
   <div class="row">
-    <div *ngFor="let food of foods">
-      <app-item [item]="food"
-                (itemEmitter)="addToOrder($event)"></app-item>
+    <div class="col-2" *ngFor="let food of foods">
+        <app-item [item]="food"
+                  (itemEmitter)="addToOrder($event)"></app-item>
     </div>
   </div>
   <div class="row">
-    <div *ngFor="let additive of additives">
-      <div class="col-1">
+    <div class="col-1" *ngFor="let additive of additives">
+
         <app-item [item]="additive"
                   (itemEmitter)="addToOrder($event)"></app-item>
       </div>
-    </div>
+
   </div>
 </ng-container>
 <ng-container *ngIf="showDrink">
   <div class="row">
-    <div *ngFor="let drink of drinks">
-      <div class="col-1">
+    <div class="col-1" *ngFor="let drink of drinks">
         <app-item [item]="drink"
                   (itemEmitter)="addToOrder($event)">
 
         </app-item>
-      </div>
     </div>
   </div>
 </ng-container>

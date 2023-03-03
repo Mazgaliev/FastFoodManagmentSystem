@@ -37,6 +37,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/remove")
+    @PreAuthorize("hasAuthority('OWNER')")
     public void deleteOrder(@RequestBody DeleteOrderForm form) {
 
         this.fastFoodShopService.deleteOrder(form.getOrderId(), form.getShopId());
@@ -44,6 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasAuthority('OWNER')")
     public OrderDto editOrder(@RequestBody EditOrderForm form) {
         OrderDto dto = this.converter
                 .convertToDto(this.fastFoodShopService
@@ -59,7 +61,7 @@ public class OrderController {
     }
 
     @GetMapping("/{shopId}")
-//    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasAuthority('OWNER')")
     public Set<OrderDto> viewAllOrders(@PathVariable FastFoodShopId shopId) {
         return this.converter.convertToDto(this.fastFoodShopService.findAllOrders(shopId));
     }

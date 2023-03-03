@@ -23,21 +23,32 @@ export class AppEffects {
     () => this.actions$.pipe(
       ofType(AppActions.login),
       exhaustMap(data =>
-        this.generalService.login(data.username, data.password, data.shopId).pipe(
-          map(shop => {
-            return AppActions.loginSuccess({shop: shop});
+        this.generalService.loginStateless(data.username, data.password, data.shopId).pipe(
+          map(token => {
+            sessionStorage.setItem("token", token);
+            return AppActions.loginSuccess();
           })
         ))
     )
   )
+
+  $loginSuccess = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.loginSuccess),
+      map(() => AppActions.fetchShop())
+    )
+  )
+
   $logout = createEffect(
     () => this.actions$.pipe(
       ofType(AppActions.logout),
-      exhaustMap(() => this.generalService.logout().pipe(
-        map(() => AppActions.logoutSuccess())
-      ))
+      map(() => {
+        sessionStorage.clear()
+        return AppActions.logoutSuccess()
+      })
     )
   )
+
   $refreshItems = createEffect(
     () => this.actions$.pipe(
       ofType(AppActions.refreshItems),
@@ -65,18 +76,6 @@ export class AppEffects {
       ))
     )
   )
-
-  // $refreshItems = createEffect(
-  //   () => this.actions$.pipe(
-  //     ofType(AppActions.refreshItems),
-  //     withLatestFrom(this.store.select(Selectors.selectShopId)),
-  //     exhaustMap(([_, id]) => {
-  //       return this.generalService.refreshItems(id).pipe(
-  //         map(data => AppActions.refreshItemsSuccess({items: data}))
-  //       )
-  //     })
-  //   )
-  // )
   $editItem = createEffect(
     () => this.actions$.pipe(
       ofType(AppActions.editItem),
@@ -135,6 +134,15 @@ export class AppEffects {
       ofType(AppActions.removeOrder),
       exhaustMap(delForm => this.generalService.deleteOrder(delForm.order).pipe(
         map(() => AppActions.getOrders({shopId: delForm.order.shopId}))
+      ))
+    )
+  )
+
+  $fetchShop = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.fetchShop),
+      exhaustMap(() => this.generalService.home().pipe(
+        map(response => AppActions.fetchShopSuccess({shop: response}))
       ))
     )
   )

@@ -19,6 +19,8 @@ const enum Actions {
   FETCH_ORDERS = '[Order] Get orders',
   FETCH_ORDERS_SUCCESS = '[Order] Successfully get orders',
   FETCH_ORDERS_FAIL = '[Order] Failure while getting orders',
+  FETCH_SHOP = '[Shop] Get shop',
+  FETCH_SHOP_SUCCESS = '[Shop] Get shop successfully',
 
   SAVE_ORDER = '[Order] Save order',
   SAVE_ORDER_SUCCESS = '[Order] Save order successfully',
@@ -60,8 +62,16 @@ const enum Actions {
   FETCH_WORKERS_SUCCESS = '[Worker] Refresh shop workers success',
   REMOVE_WORKER = '[Worker] delete a worker',
   DELETE_WORKER_SUCCESS = '[Worker] delete a worker successfully'
-
 }
+
+export const fetchShop = createAction(
+  Actions.FETCH_SHOP,
+)
+
+export const fetchShopSuccess = createAction(
+  Actions.FETCH_SHOP_SUCCESS,
+  props<{ shop: FastFoodShop }>()
+)
 
 export const removeWorker = createAction(
   Actions.REMOVE_WORKER,
@@ -173,8 +183,7 @@ export const login = createAction(
 )
 
 export const loginSuccess = createAction(
-  Actions.LOGIN_SUCCESS,
-  props<{ shop: FastFoodShop }>()
+  Actions.LOGIN_SUCCESS
 )
 export const loginFail = createAction(
   Actions.LOGIN_FAIL,

@@ -9,8 +9,9 @@ import {AppActions, Selectors} from "../../store";
 })
 export class ShopModuleComponent implements OnInit {
 
-  $loggedIn = this.store.select(Selectors.selectLoggedIn)
-  $role = this.store.select(Selectors.selectRole)
+  $loggedIn = this.store.select(Selectors.selectLoggedIn);
+  $role = this.store.select(Selectors.selectRole);
+  $shopName = this.store.select(Selectors.selectShopName);
 
   constructor(private readonly store: Store) {
   }

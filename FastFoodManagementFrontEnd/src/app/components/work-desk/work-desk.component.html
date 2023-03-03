@@ -14,9 +14,12 @@
 <br>
 <br>
 <br>
-<app-item-list *ngIf="$foods && $drinks && $additives" [foods]="($foods|async)!"
-               [drinks]="($drinks|async)!"
-               [additives]="($additives|async)!"
-               (addItemToOrderEmitter)="addItemToOrder($event)">
+<div class="container-fluid">
+  <app-item-list *ngIf="$foods && $drinks && $additives" [foods]="($foods|async)!"
+                 [drinks]="($drinks|async)!"
+                 [additives]="($additives|async)!"
+                 (addItemToOrderEmitter)="addItemToOrder($event)">
 
-</app-item-list>
+  </app-item-list>
+
+</div>

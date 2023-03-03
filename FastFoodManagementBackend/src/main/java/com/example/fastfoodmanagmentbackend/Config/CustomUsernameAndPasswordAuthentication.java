@@ -6,7 +6,7 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.FastFoodShopId;
 import com.example.fastfoodmanagmentbackend.Service.FastFoodShopService;
 import com.example.fastfoodmanagmentbackend.Service.converter.Converter;
 import com.example.fastfoodmanagmentbackend.Service.dto.FastFoodShopDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
+@Profile("stateful")
 public class CustomUsernameAndPasswordAuthentication implements AuthenticationProvider {
     private final static String customToken = "shopId";
 

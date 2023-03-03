@@ -8,13 +8,11 @@ import com.example.fastfoodmanagmentbackend.Service.converter.Converter;
 import com.example.fastfoodmanagmentbackend.Service.dto.FastFoodShopDto;
 import com.example.fastfoodmanagmentbackend.Service.forms.FastFoodShopForm;
 import com.example.fastfoodmanagmentbackend.Service.forms.WorkerForm;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/register")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RegistrationController {
 
     private final FastFoodShopService fastFoodShopService;

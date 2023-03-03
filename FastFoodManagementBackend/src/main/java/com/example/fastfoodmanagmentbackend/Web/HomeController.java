@@ -17,6 +17,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping(value = {"/api", "/api/home", "/"})
+@CrossOrigin(origins = "http://localhost:4200")
 public class HomeController {
 
     private final FastFoodShopService fastFoodShopService;
@@ -42,6 +43,7 @@ public class HomeController {
     }
 
     @PostMapping("/remove")
+    @PreAuthorize("hasAuthority('OWNER')")
     public boolean removeWorker(@RequestBody DeleteWorkerForm form) {
 
 

@@ -27,6 +27,12 @@ export class GeneralService {
   constructor(private readonly httpClient: HttpClient) {
   }
 
+
+  home(): Observable<FastFoodShop> {
+
+    return this.httpClient.get<FastFoodShop>(this.homeUrl);
+  }
+
   login(username: string, password: string, shopId: string): Observable<FastFoodShop> {
 
     let formData: any = new FormData();
@@ -34,11 +40,20 @@ export class GeneralService {
     formData.append("password", password);
     formData.append("shopId", shopId);
 
-    return this.httpClient.post<FastFoodShop>("api/login", formData);
+    return this.httpClient.post<FastFoodShop>("api/home/", formData);
+  }
+
+  loginStateless(username: string, password: string, shopId: string): Observable<string> {
+
+    let formData: any = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("shopId", shopId);
+
+    return this.httpClient.post("http://localhost:9090/login", formData, {responseType: 'text'});
   }
 
   logout(): Observable<any> {
-    // this.httpClient.post("")
 
     return this.httpClient.post<any>("api/logout", null);
   }

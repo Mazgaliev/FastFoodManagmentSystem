@@ -10,7 +10,7 @@ import {
   editItem,
   editItemSuccess,
   editOrder,
-  editOrderSuccess, fetchWorkers, fetchWorkersSuccess,
+  editOrderSuccess, fetchShopSuccess, fetchWorkers, fetchWorkersSuccess,
   getOrders,
   getOrdersFail,
   getOrdersSuccess,
@@ -141,6 +141,9 @@ export const reducer = createReducer(
     })),
     on(logout, (state) => ({
       ...state,
+    })),
+    on(logoutSuccess, (state) => ({
+      ...state,
       shopState: defaultShop,
       orderState: defaultOrders,
       allOrders: [],
@@ -165,9 +168,8 @@ export const reducer = createReducer(
       allOrders: [],
       loggedIn: false
     })),
-    on(loginSuccess, (state, {shop}) => ({
+    on(loginSuccess, (state) => ({
       ...state,
-      shopState: {...shop},
       loggedIn: true
     })),
     on(registerStore, (state) => ({
@@ -183,6 +185,10 @@ export const reducer = createReducer(
     on(fetchWorkersSuccess, (state, {workers}) => ({
       ...state,
       workers: [...workers]
+    })),
+    on(fetchShopSuccess, (state, {shop}) => ({
+      ...state,
+      shopState: {...shop}
     }))
   )
 ;

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {AppActions, Selectors} from "../../store";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {Item} from "../../models/Item/Item";
 import {FastFoodShopId} from "../../models/FastFoodShop/FastFoodShopId";
 import {DeleteItem} from "../../models/Item/DeleteItem";
@@ -26,9 +26,9 @@ export class ItemManagementComponent implements OnInit {
 
   deleteItem(item: any): void {
     let id: FastFoodShopId = {id: ""}
-    this.store.select(Selectors.selectShopId).subscribe(shopId => {
+    this.store.select(Selectors.selectShopId).pipe(tap(shopId => {
       id = shopId
-    })
+    }))
 
     const formData: DeleteItem = {
       shopId: id,
@@ -36,5 +36,6 @@ export class ItemManagementComponent implements OnInit {
     }
 
     this.store.dispatch(AppActions.deleteItem({item: formData}))
+    // obs.unsubscribe()
   }
 }

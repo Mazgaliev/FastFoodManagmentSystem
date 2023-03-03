@@ -7,7 +7,7 @@ import {Person} from "../models/Person/Person";
 
 export const defaultShop: FastFoodShop = {
   id: {
-    id: "8d195355-8dbc-4199-b1e9-50262bba4c7a"
+    id: ""
   },
   name: "",
   location: {
@@ -20,7 +20,7 @@ export const defaultShop: FastFoodShop = {
       id: ''
     },
     username: "",
-    role: PersonRole.WORKER,
+    role: null,
   },
   owner: {
     name: "",

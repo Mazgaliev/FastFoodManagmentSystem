@@ -68,9 +68,9 @@ export class WorkDeskComponent implements OnInit {
     this.$fastFoodShop.subscribe(data => {
       shopId = data.id.id
     })
-    this.store.select(Selectors.selectShop).subscribe(shop => {
+    this.store.select(Selectors.selectShop).pipe(tap(shop => {
       worker = shop.currentWorker.username
-    })
+    })).subscribe()
     const createOrder: CreateOrder = {
       shopId: {
         id: shopId
@@ -81,5 +81,6 @@ export class WorkDeskComponent implements OnInit {
       workerUsername: worker,
     }
     this.store.dispatch(AppActions.saveOrder({order: createOrder}))
+    console.log(worker)
   }
 }

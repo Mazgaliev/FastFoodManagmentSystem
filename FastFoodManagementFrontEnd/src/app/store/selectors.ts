@@ -1,5 +1,6 @@
 import {createFeatureSelector, createSelector, select} from "@ngrx/store";
 import {AppState} from "./state";
+import {FastFoodShop} from "../models/FastFoodShop/FastFoodShop";
 
 export const appFeatureKey = 'appState';
 
@@ -9,6 +10,11 @@ export const selectAppState = createFeatureSelector<AppState>(appFeatureKey);
 export const selectShop = createSelector(
   selectAppState,
   (state: AppState) => state.shopState
+);
+
+export const selectShopName = createSelector(
+  selectShop,
+  (state: FastFoodShop) => state.name
 );
 export const selectOrders = createSelector(
   selectAppState,
