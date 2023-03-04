@@ -12,6 +12,8 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.contact.Operator;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.contact.PhoneNumber;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Currency;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location;
+import com.example.fastfoodmanagmentbackend.Service.dto.RegisterMailDto;
+import com.example.fastfoodmanagmentbackend.Service.dto.WorkerDto;
 import com.example.fastfoodmanagmentbackend.Service.forms.FastFoodShopForm;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,8 +23,8 @@ import java.util.Set;
 
 public interface FastFoodShopService {
 
-    FastFoodShop createShop(FastFoodShopForm form);
-    boolean deleteShop(FastFoodShopId shopId);
+    RegisterMailDto createShop(FastFoodShopForm form);
+    FastFoodShop deleteShop(FastFoodShopId shopId);
 
     void addItem(String name, Currency currency, Double amount, ItemType type, FastFoodShopId shopId);
 
@@ -41,9 +43,9 @@ public interface FastFoodShopService {
     Set<Order> findAllOrdersBetween(LocalDateTime from, LocalDateTime to, FastFoodShopId shopId);
 
 
-    void createShopWorker(String username, String password, Role role, FastFoodShopId shopId);
+    FastFoodShop createShopWorker(String username, String password, Role role, FastFoodShopId shopId);
 
-    boolean deleteShopWorker(WorkerId workerId, FastFoodShopId shopId);
+    FastFoodShop deleteShopWorker(WorkerId workerId, FastFoodShopId shopId);
 
     UserDetails loadUserByUsernameAndShop(String username, FastFoodShopId fastFoodShopId);
 

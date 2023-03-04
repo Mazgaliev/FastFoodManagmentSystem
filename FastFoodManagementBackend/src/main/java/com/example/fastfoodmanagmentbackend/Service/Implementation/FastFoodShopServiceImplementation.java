@@ -17,6 +17,8 @@ import com.example.fastfoodmanagmentbackend.Model.ValueObjects.financial.Money;
 import com.example.fastfoodmanagmentbackend.Model.ValueObjects.location.Location;
 import com.example.fastfoodmanagmentbackend.Repository.FastFoodShopRepository;
 import com.example.fastfoodmanagmentbackend.Service.FastFoodShopService;
+import com.example.fastfoodmanagmentbackend.Service.dto.RegisterMailDto;
+import com.example.fastfoodmanagmentbackend.Service.dto.WorkerDto;
 import com.example.fastfoodmanagmentbackend.Service.forms.FastFoodShopForm;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,8 +28,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -39,7 +46,7 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public FastFoodShop createShop(FastFoodShopForm form) throws PlaceNameAlreadyInUseException {
+    public RegisterMailDto createShop(FastFoodShopForm form) throws PlaceNameAlreadyInUseException {
         FastFoodShop f = this.fastFoodShopRepository.findByNameLike(form.getName());
         if (f != null)
             throw new PlaceNameAlreadyInUseException();
@@ -50,22 +57,32 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
         FastFoodShop fastFoodShop = new FastFoodShop(form.getName(), loc, o);
         this.fastFoodShopRepository.saveAndFlush(fastFoodShop);
 
-        Person worker = new Person(o.getOwnerSurname(), passwordEncoder.encode("dummyPassword"), Role.OWNER);
+        String password = this.generateRandomHexToken(8);
+
+        Person worker = new Person(o.getOwnerSurname(), passwordEncoder.encode(password), Role.OWNER);
         FastFoodShop shop = this.fastFoodShopRepository.findById(fastFoodShop.getId()).orElseThrow(ShopWithIdDoesntExistException::new);
         shop.addWorker(worker);
+        this.fastFoodShopRepository.save(shop);
 
-        return this.fastFoodShopRepository.save(shop);
+        RegisterMailDto dto = new RegisterMailDto();
+
+        dto.setPassword(password);
+        dto.setShopId(shop.getId());
+        dto.setUsername(worker.getUsername());
+        dto.setEmail(o.getE_mail());
+
+        return dto;
     }
 
     @Override
-    public boolean deleteShop(FastFoodShopId shopId) {
+    public FastFoodShop deleteShop(FastFoodShopId shopId) {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
         Set<Person> workers = shop.getWorkers();
         for (Person w : workers) {
             shop.removeWorker(w.getId());
         }
         this.fastFoodShopRepository.delete(shop);
-        return true;
+        return shop;
     }
 
     @Override
@@ -134,25 +151,28 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
     }
 
     @Override
-    public void createShopWorker(String username, String password, Role role, FastFoodShopId shopId) {
+    public FastFoodShop createShopWorker(String username, String password, Role role, FastFoodShopId shopId) {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
         Person p = new Person(username, this.passwordEncoder.encode(password), role);
         shop.addWorker(p);
+
         this.fastFoodShopRepository.saveAndFlush(shop);
+
+        return shop;
     }
 
     @Override
-    public boolean deleteShopWorker(WorkerId workerId, FastFoodShopId shopId) throws ShopWithIdDoesntExistException, PlaceMustHaveOwnerException {
+    public FastFoodShop deleteShopWorker(WorkerId workerId, FastFoodShopId shopId) throws ShopWithIdDoesntExistException, PlaceMustHaveOwnerException {
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
 
         try {
             shop.removeWorker(workerId);
 
             this.fastFoodShopRepository.saveAndFlush(shop);
-            return true;
+            return shop;
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
-            return false;
+            return null;
         }
     }
 
@@ -192,5 +212,13 @@ public class FastFoodShopServiceImplementation implements FastFoodShopService, U
         FastFoodShop shop = this.fastFoodShopRepository.findById(shopId).orElseThrow(ShopWithIdDoesntExistException::new);
 
         return shop.getWorkers();
+    }
+
+
+    private String generateRandomHexToken(int byteLength) {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] token = new byte[byteLength];
+        secureRandom.nextBytes(token);
+        return new BigInteger(1, token).toString(16); // Hexadecimal encoding
     }
 }

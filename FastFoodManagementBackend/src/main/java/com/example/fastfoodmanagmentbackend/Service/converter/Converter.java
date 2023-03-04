@@ -5,10 +5,7 @@ import com.example.fastfoodmanagmentbackend.Model.FastFoodShop;
 import com.example.fastfoodmanagmentbackend.Model.Item;
 import com.example.fastfoodmanagmentbackend.Model.Order;
 import com.example.fastfoodmanagmentbackend.Model.Person;
-import com.example.fastfoodmanagmentbackend.Service.dto.FastFoodShopDto;
-import com.example.fastfoodmanagmentbackend.Service.dto.OrderDto;
-import com.example.fastfoodmanagmentbackend.Service.dto.ShopItemsDto;
-import com.example.fastfoodmanagmentbackend.Service.dto.WorkerDto;
+import com.example.fastfoodmanagmentbackend.Service.dto.*;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -93,6 +90,7 @@ public class Converter {
 
         return workers.stream().map(this::convertToDto).collect(Collectors.toSet());
     }
+
     public Set<OrderDto> convertToDto(Set<Order> orders) {
 
         return orders.stream().map(this::convertToDto).collect(Collectors.toSet());

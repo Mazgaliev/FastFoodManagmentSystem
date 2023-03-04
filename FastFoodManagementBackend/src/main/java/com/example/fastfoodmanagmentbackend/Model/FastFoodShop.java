@@ -145,7 +145,7 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
         return this.workers.stream().filter(i -> i.getUsername().equals(username)).findFirst().orElseThrow(() -> new BadCredentialsException("Invalid worker username"));
     }
 
-    public void removeWorker(WorkerId workerId) {
+    public Person removeWorker(WorkerId workerId) {
         Person worker = this.workers.stream().filter(w -> w.getId().getId().equals(workerId.getId())).findFirst().orElseThrow(() -> new GenericException("Worker with that id does not exist"));
         Person owner = this.workers.stream().filter(w -> w.getRole().equals(Role.OWNER)).findFirst().orElseThrow(() -> new PlaceMustHaveOwnerException("Owner must exist"));
         Set<Order> newOrders = new HashSet<>();
@@ -161,6 +161,8 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
         this.orders.removeIf(o -> o.getWorker().getId().getId().equals(worker.getId().getId()));
 
         this.workers.remove(worker);
+
+        return worker;
     }
 
     public Set<Order> ordersBetweenDates(LocalDateTime start, LocalDateTime end) {
