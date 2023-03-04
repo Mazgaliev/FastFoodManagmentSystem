@@ -12,6 +12,7 @@ export class StaffComponent implements OnInit {
 
   @Input() person: Person = {username: "", role: PersonRole.WORKER, id: {id: ""}};
   @Output() deletePersonEmitter: EventEmitter<WorkerId> = new EventEmitter<WorkerId>()
+  roles = PersonRole;
 
   constructor() {
   }

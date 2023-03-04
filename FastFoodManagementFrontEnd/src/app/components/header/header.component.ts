@@ -20,8 +20,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.isOwner = this.role.toString() == PersonRole[PersonRole.OWNER]
-    console.log(this.role)
-    console.log(PersonRole[this.role])
   }
 
   logout() {

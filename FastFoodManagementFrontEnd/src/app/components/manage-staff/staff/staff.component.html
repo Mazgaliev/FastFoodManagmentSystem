@@ -8,7 +8,7 @@
     <div class="col-2">
       <h4>{{person.role}}</h4>
     </div>
-    <div class="col-1">
+    <div class="col-1" *ngIf="person.role!.toString() != roles[roles.OWNER]">
       <div class="col-1">
         <button class="btn btn-secondary" (click)="delete()">Избрши</button>
       </div>
