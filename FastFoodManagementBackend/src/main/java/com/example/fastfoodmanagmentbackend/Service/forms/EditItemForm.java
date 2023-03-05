@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class EditItemForm {
     @NotNull
-    Long itemid;
+    Long itemId;
 
     @NotNull
     FastFoodShopId shopId;

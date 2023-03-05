@@ -48,7 +48,7 @@ public class ItemController {
     @PostMapping("/edit")
     @PreAuthorize("hasAuthority('OWNER')")
     public Item modifyItem(@RequestBody EditItemForm form) {
-        return this.fastFoodShopService.editItem(form.getShopId(), form.getItemid(), form.getItemName(), form.getCurrency(), form.getAmount());
+        return this.fastFoodShopService.editItem(form.getShopId(), form.getItemId(), form.getItemName(), form.getCurrency(), form.getAmount());
 
     }
 

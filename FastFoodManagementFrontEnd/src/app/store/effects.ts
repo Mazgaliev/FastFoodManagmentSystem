@@ -147,6 +147,15 @@ export class AppEffects {
     )
   )
 
+  $editOrder = createEffect(
+    ()=>this.actions$.pipe(
+      ofType(AppActions.editItem),
+      exhaustMap(data=>this.generalService.editItem(data.item).pipe(
+        map(response=>AppActions.refreshItems())
+      ))
+    )
+  )
+
 
   //$createUser
   //$removeUser

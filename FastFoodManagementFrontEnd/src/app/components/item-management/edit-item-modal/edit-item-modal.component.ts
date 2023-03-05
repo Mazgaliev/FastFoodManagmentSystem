@@ -20,7 +20,8 @@ export class EditItemModalComponent implements OnInit {
 
   editItemForm = this.formBuilder.group({
     name: [this.item?.name, Validators.minLength(1)],
-    amount: [this.item?.price.amount, Validators.required]
+    amount: [this.item?.price.amount, Validators.required],
+    type: [this.item?.type, Validators.required]
   })
 
   constructor(private formBuilder: FormBuilder, private readonly store: Store, public activeModal: NgbActiveModal) {
@@ -40,13 +41,18 @@ export class EditItemModalComponent implements OnInit {
       amount: form.amount!,
       currency: this.item?.price.currency!
     }
+
     const formData: EditItem = {
       shopId: id,
       itemId: this.item?.id!,
-      price: itemPrice,
-      name: form.name!
+      amount: form.amount ? form.amount : this.item?.price.amount!,
+      currency: this.item?.price.currency!,
+      itemName: form.name ? form.name : this.item?.name!,
+      type: this.item?.type!
     }
 
     this.store.dispatch(AppActions.editItem({item: formData}))
+
+    this.activeModal.close("Edited Item")
   }
 }

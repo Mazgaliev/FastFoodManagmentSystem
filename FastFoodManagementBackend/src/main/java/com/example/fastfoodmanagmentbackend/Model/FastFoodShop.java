@@ -125,17 +125,18 @@ public class FastFoodShop extends AbstractEntity<FastFoodShopId> {
         Item i = this.items.stream().filter(item -> item.getId().equals(itemId)).findFirst().orElse(null);
         if (i == null) {
             throw new ItemDoesNotExistException();
-        } else if (i.getPrice().getAmount() != amount) {
+        }
+        else if (i.getPrice().getAmount() != amount) {
             Money money = Money.valueOf(currency, amount);
             i.changePrice(money);
-        } else if (!i.getName().equals(name)) {
+        }
+        if (!i.getName().equals(newName)) {
             i.changeName(newName);
         }
         return i;
     }
 
     public Person addWorker(Person person) {
-//        var p = new Person(username, password, role);
         this.workers.add(person);
         return person;
     }
