@@ -33,13 +33,6 @@ export class OrderComponent implements OnInit {
   }
 
   removeAllOfItemId(event: OrderItem) {
-    // console.log(event);
-    // this.total -= event.amount;
-    // for (let i = 0; i < this.items.length; i++) {
-    //   if (this.items[i].id == event.id) {
-    //     this.items.splice(i, 1);
-    //   }
-    // }
 
     this.clearAllItemsWithIdEmitter.emit(event);
   }

@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-8 text-center border border-dark" *ngIf="order!=null">
-      <h1 class="h1">Нарачка</h1>
+    <div class="col-8 text-center border border-dark style" *ngIf="order!=null">
+
       <div class="row" *ngFor="let item of (order.items)">
         <div class="col-12">
           <app-order-item [item]="item"
