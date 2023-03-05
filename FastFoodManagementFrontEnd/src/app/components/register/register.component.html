@@ -1,0 +1,74 @@
+<section id="header" class="jumbotron text-center">
+  <h1 class="display-3">Register</h1>
+</section>
+
+<div class="container">
+  <form [formGroup]="registrationForm" class="form-signin mt-xl-5" method="post" action="/login">
+
+    <p>
+      <label for="name" class="sr-only">Shop Name</label>
+      <input formControlName="name" type="text" id="name" name="name" class="form-control"
+             placeholder="Shop Name"
+             required="true">
+    </p>
+
+    <p>
+      <label for="longitude" class="sr-only">longitude</label>
+      <input formControlName="longitude" type="text" id="longitude" name="longitude" class="form-control"
+             placeholder="Longitude"
+             required="true"
+             autofocus="">
+    </p>
+    <p>
+      <label for="latitude" class="sr-only">latitude</label>
+      <input formControlName="latitude" type="text" id="latitude" name="latitude" class="form-control"
+             placeholder="Latitude"
+             required="true">
+    </p>
+    <p>
+      <label for="city" class="sr-only">City</label>
+      <input formControlName="city" type="text" id="city" name="latitude" class="form-control"
+             placeholder="Shop City"
+             required="true">
+    </p>
+    <p>
+      <label for="ownerName" class="sr-only">Owner Name</label>
+      <input formControlName="ownerName" type="text" id="ownerName" name="ownerName" class="form-control"
+             placeholder="Name"
+             required="true">
+    </p>
+    <p>
+      <label for="ownerSurname" class="sr-only">Owner Surname</label>
+      <input formControlName="ownerSurname" type="latitude" id="ownerSurname" name="ownerSurname" class="form-control"
+             placeholder="Surname"
+             required="true">
+    </p>
+    <p>
+      <label for="e_mail" class="sr-only">e_mail</label>
+      <input formControlName="e_mail" type="latitude" id="e_mail" name="e_mail" class="form-control"
+             placeholder="E_mail"
+             required="true">
+    </p>
+    <p>
+      <label for="ownerOperator" class="sr-only">Phone Operator</label>
+      <input formControlName="ownerOperator" type="latitude" id="ownerOperator" name="ownerOperator"
+             class="form-control"
+             placeholder="Operator"
+             required="true">
+    </p>
+    <p>
+      <label for="ownerPhone" class="sr-only">Phone Number</label>
+      <input formControlName="ownerPhone" type="text" id="ownerPhone" name="ownerPhone" class="form-control"
+             placeholder="Number"
+             required="true">
+    </p>
+
+  </form>
+  <button id="submit" class="btn btn-lg btn-primary btn-block" type="submit"
+          [disabled]="!registrationForm.valid"
+          [routerLink]="'/login'"
+          (click)="register()">Submit form
+  </button>
+  <!--  <a href="/register" class="btn btn-block btn-light">Register here</a>-->
+
+</div>

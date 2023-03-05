@@ -12,6 +12,7 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {environment} from "../environments/environment";
 import {EditItemModalComponent} from './components/item-management/edit-item-modal/edit-item-modal.component';
 import {InterceptorService} from "./interceptor/interceptor.service";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,18 +21,19 @@ import {InterceptorService} from "./interceptor/interceptor.service";
     EditItemModalComponent,
 
   ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({
-      maxAge: 10
-    }),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-    HttpClientModule,
-    ShopModuleModule,
-    RouterOutlet,
-  ],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        StoreModule.forRoot({}, {}),
+        StoreDevtoolsModule.instrument({
+            maxAge: 10
+        }),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+        HttpClientModule,
+        ShopModuleModule,
+        RouterOutlet,
+        ReactiveFormsModule,
+    ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true}],
   exports: [],
   bootstrap: [AppComponent]

@@ -31,7 +31,7 @@ export class ShopItemComponent implements OnInit {
   }
 
   editItem() {
-    const modal = this.modalService.open(EditItemModalComponent, {size: "sm"})
+    const modal = this.modalService.open(EditItemModalComponent, {size: "lg"})
 
     modal.componentInstance.item = this.item
   }

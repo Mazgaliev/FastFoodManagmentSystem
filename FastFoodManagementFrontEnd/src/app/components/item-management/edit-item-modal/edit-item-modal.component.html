@@ -1,0 +1,39 @@
+<ng-container *ngIf="item">
+  <div class="container-fluid">
+    <div class="modal-header">
+      <h3>{{"Item id: " + item.id}}</h3>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="editItemForm" class="form-signin mt-xl-5" method="post">
+        <p>
+          <label for="name" class="sr-only">Item Name</label>
+          <input formControlName="name" type="text" id="name" name="name" class="form-control"
+                 [placeholder]="item.name"
+                 required="true">
+        </p>
+        <p>
+          <label for="amount" class="sr-only">Item Name</label>
+          <input formControlName="amount" type="text" id="amount" name="amount" class="form-control"
+                 [placeholder]="item.price.amount"
+                 required="true">
+        </p>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div class="col"></div>
+      <div class="col-2">
+        <button class="btn btn-outline-info" (click)="editItem()">
+          Save
+        </button>
+      </div>
+      <div class="col-2"></div>
+      <div class="col-2">
+        <button class="btn btn-outline-secondary" (click)="this.activeModal.close('Clicked close')">
+          Cancel
+        </button>
+      </div>
+      <div class="col"></div>
+
+    </div>
+  </div>
+</ng-container>
