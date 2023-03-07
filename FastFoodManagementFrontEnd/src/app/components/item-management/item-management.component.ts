@@ -28,7 +28,7 @@ export class ItemManagementComponent implements OnInit {
     let id: FastFoodShopId = {id: ""}
     this.store.select(Selectors.selectShopId).pipe(tap(shopId => {
       id = shopId
-    }))
+    })).subscribe()
 
     const formData: DeleteItem = {
       shopId: id,
@@ -36,6 +36,5 @@ export class ItemManagementComponent implements OnInit {
     }
 
     this.store.dispatch(AppActions.deleteItem({item: formData}))
-    // obs.unsubscribe()
   }
 }

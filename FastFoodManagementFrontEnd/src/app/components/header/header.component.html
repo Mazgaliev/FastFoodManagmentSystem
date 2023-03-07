@@ -27,10 +27,11 @@
                     [textContent]="shopName">
             </button>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="'/orders'">Orders</a>
-          </li>
           <ng-container *ngIf="isOwner">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="'/orders'">Orders</a>
+            </li>
+
             <li>
               <a class="nav-link" [routerLink]="'/create'">Create a worker</a>
             </li>

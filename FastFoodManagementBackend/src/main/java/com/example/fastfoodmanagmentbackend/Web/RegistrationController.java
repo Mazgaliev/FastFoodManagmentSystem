@@ -32,6 +32,7 @@ public class RegistrationController {
     public boolean registerShop(@RequestBody FastFoodShopForm form) {
         RegisterMailDto shop = this.fastFoodShopService.createShop(form);
 
+
         if (shop != null) {
             String body = "Your shop login ID is: " + shop.getShopId().getId() + "\n"
                     + "Your username is: " + shop.getUsername() + "\n"
@@ -42,6 +43,7 @@ public class RegistrationController {
             );
             return true;
         }
+
 
         return false;
     }
